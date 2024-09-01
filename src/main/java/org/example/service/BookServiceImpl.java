@@ -68,4 +68,21 @@ try{
         }
 
     }
+
+    @Override
+    public void deleteBook(int isbn) {
+        try
+        {
+            Connection connection=ConnectionFactory.getConnection();
+            Statement statement=connection.createStatement();
+
+            String query="delete from books where isbn='"+isbn+"'";
+            statement.executeUpdate(query);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
+
 }
