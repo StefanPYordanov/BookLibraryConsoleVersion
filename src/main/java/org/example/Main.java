@@ -14,6 +14,8 @@ public class Main {
 //        UserServiceImpl userServiceImpl = new UserServiceImpl();
 
 
+                        //BOOK
+
         // Add book test functionality
 //        bookServiceImpl.addBook();
 
@@ -25,9 +27,28 @@ public class Main {
 //        int isbn = scanner.nextInt();
 //        bookServiceImpl.deleteBook(isbn);
 
+        //Find book by book name
+//         System.out.println("book name to find");
+//         String name = scanner.nextLine();
+//         bookServiceImpl.findBookByName(name);
+
+                        //USER
+
         //Add user test functionality
 //        userServiceImpl.addUser();
 
+        //Display all users for admin purpose
+//        userServiceImpl.displayUsers();
+
+        //Block user
+//        System.out.println("user to delete");
+//        int id = scanner.nextInt();
+//        userServiceImpl.deleteUser(id);
+
+        //Give role to user
+//        System.out.println("id to make admin");
+//        int id = scanner.nextInt();
+//        userServiceImpl.giveRole(id);
 
     }
 

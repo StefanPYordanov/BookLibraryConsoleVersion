@@ -71,8 +71,7 @@ try{
 
     @Override
     public void deleteBook(int isbn) {
-        try
-        {
+        try {
             Connection connection=ConnectionFactory.getConnection();
             Statement statement=connection.createStatement();
 
@@ -83,6 +82,29 @@ try{
             System.out.println(e);
         }
 
+    }
+
+    public void findBookByName(String name){
+        try {
+            Connection connection=ConnectionFactory.getConnection();
+            Statement statement=connection.createStatement();
+
+            String query="select * from books where book_name='"+name+"'";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()){
+                System.out.println(resultSet.getString(1)
+                        + " " + resultSet.getString(2)
+                        + " " + resultSet.getString(3)
+                        + " " + resultSet.getString(4)
+                        + " " + resultSet.getString(5)
+                        + " " + resultSet.getString(6));
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 }
