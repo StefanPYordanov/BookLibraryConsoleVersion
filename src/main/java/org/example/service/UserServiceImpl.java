@@ -6,38 +6,72 @@ import org.example.model.entity.UserEntity;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Random;
 import java.util.Scanner;
 
 public class UserServiceImpl implements UserService {
 
     @Override
-    public void addUser() {
+    public void login(String username, String password) {
+        try {
+            Connection connection=ConnectionFactory.getConnection();
+            Statement statement=connection.createStatement();
 
+            String query="select * from users where username='"+username+"' and password= '"+password+"' ";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (!resultSet.next()){
+                System.out.println("Invalid username or password !");
+            }else{
+                String fullName = resultSet.getString(5);
+                System.out.println("Welcome " + fullName);
+            }
+
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    @Override
+    public void register() {
         try{
             Scanner scanner = new Scanner(System.in);
             UserEntity userEntity = new UserEntity();
+            Random random = new Random();
 
-            System.out.println("id");
-            userEntity.setId(scanner.nextInt());
+            int id = random.nextInt(1, 10000000);
+            userEntity.setId(id);
             System.out.println("username");
-            userEntity.setUsername(scanner.nextLine());
-            userEntity.setUsername(scanner.nextLine());
+            String username = scanner.nextLine();
+            userEntity.setUsername(username);
             System.out.println("password");
-            userEntity.setPassword(scanner.nextLine());
+            String password = scanner.nextLine();
+            userEntity.setPassword(password);
+            System.out.println("repeat password");
+            String rePass = scanner.nextLine();
             System.out.println("email");
-            userEntity.setEmail(scanner.nextLine());
+            String email = scanner.nextLine();
+            userEntity.setEmail(email);
             System.out.println("full name");
-            userEntity.setFullName(scanner.nextLine());
-            System.out.println("role");
-            userEntity.setRole(scanner.nextLine());
+            String fullName = scanner.nextLine();
+            userEntity.setFullName(fullName);
+            String role = "User";
+            userEntity.setRole(role);
 
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "insert into users values ('"+userEntity.getId()+"','"+userEntity.getUsername()
-                    +"','"+userEntity.getPassword()+"','"+userEntity.getEmail()+"','"+userEntity.getFullName()
-                    +"','"+userEntity.getRole()+"')";
-            statement.executeUpdate(query);
+            if (password.equals(rePass)){
+                String query = "insert into users values ('"+id+"','"+username
+                        +"','"+password+"','"+email+"','"+fullName
+                        +"','"+role+"')";
+                statement.executeUpdate(query);
+
+            }else{
+                System.out.println("Passwords mismatch");
+            }
 
         }catch (Exception e){
             System.out.println(e);
@@ -104,4 +138,5 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
 }
