@@ -8,5 +8,6 @@ public interface UserService {
     public void deleteUser(int id);
     public void displayUsers();
     public void giveRole(int id);
+    public  int nextUserId();
 
 }

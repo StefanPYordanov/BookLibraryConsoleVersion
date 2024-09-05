@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
             UserEntity userEntity = new UserEntity();
             Random random = new Random();
 
-            int id = random.nextInt(1, 10000000);
+            int id = nextUserId();
             userEntity.setId(id);
             System.out.println("username");
             String username = scanner.nextLine();
@@ -137,6 +137,26 @@ public class UserServiceImpl implements UserService {
             System.out.println(e);
         }
 
+    }
+
+    @Override
+    public int nextUserId() {
+        try{
+            Connection connection = ConnectionFactory.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "select * from users order by id desc limit 0, 1";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()){
+                return resultSet.getInt(1) + 1;
+            }
+
+        }catch (Exception e){
+            return 0;
+        }
+        return 0;
     }
 
 }

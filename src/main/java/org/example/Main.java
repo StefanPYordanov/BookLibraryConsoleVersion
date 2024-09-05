@@ -11,10 +11,10 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-//        Scanner scanner = new Scanner(System.in);
-//        BookServiceImpl bookServiceImpl = new BookServiceImpl();
-//        UserServiceImpl userServiceImpl = new UserServiceImpl();
-//        UserEntity userEntity = new UserEntity();
+        Scanner scanner = new Scanner(System.in);
+        BookServiceImpl bookServiceImpl = new BookServiceImpl();
+        UserServiceImpl userServiceImpl = new UserServiceImpl();
+        UserEntity userEntity = new UserEntity();
 
 
 
@@ -62,8 +62,10 @@ public class Main {
 //        userServiceImpl.login(username, password);
 
         //Register - only for NOT-USERS
-        //add check if username and email is already exist,
+//        add check if username and email is already exist,
 //        userServiceImpl.register();
+
+
 
 
     }
