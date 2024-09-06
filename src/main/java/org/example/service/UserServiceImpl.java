@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserServiceImpl implements UserService {
 
@@ -39,7 +41,6 @@ public class UserServiceImpl implements UserService {
         try{
             Scanner scanner = new Scanner(System.in);
             UserEntity userEntity = new UserEntity();
-            Random random = new Random();
 
             int id = nextUserId();
             userEntity.setId(id);
@@ -72,6 +73,8 @@ public class UserServiceImpl implements UserService {
             }else{
                 System.out.println("Passwords mismatch");
             }
+
+
 
         }catch (Exception e){
             System.out.println(e);
