@@ -29,13 +29,14 @@ try{
     bookEntity.setReleaseYear(scanner.nextInt());
     System.out.println("pages");
     bookEntity.setPages(scanner.nextInt());
+    bookEntity.setRating(0);
 
     Connection connection = ConnectionFactory.getConnection();
     Statement statement = connection.createStatement();
 
     String query = "insert into books values ('"+bookEntity.getIsbn()+"','"+bookEntity.getBookName()
             +"','"+bookEntity.getAuthorName()+"','"+bookEntity.getGenre()+"','"+bookEntity.getReleaseYear()
-            +"','"+bookEntity.getPages()+"')";
+            +"','"+bookEntity.getPages()+"','"+bookEntity.getRating()+"')";
     statement.executeUpdate(query);
 
 }catch (Exception e){
@@ -60,7 +61,8 @@ try{
                         + " " + resultSet.getString(3)
                         + " " + resultSet.getString(4)
                         + " " + resultSet.getString(5)
-                        + " " + resultSet.getString(6));
+                        + " " + resultSet.getString(6)
+                        +" " + resultSet.getString(7));
             }
 
         }catch (Exception e){
@@ -99,12 +101,55 @@ try{
                         + " " + resultSet.getString(3)
                         + " " + resultSet.getString(4)
                         + " " + resultSet.getString(5)
-                        + " " + resultSet.getString(6));
+                        + " " + resultSet.getString(6)
+                        + " " + resultSet.getString(7));
             }
         }
         catch (Exception e) {
             System.out.println(e);
         }
     }
+    public void addRating(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("enter book name to rate it");
+        String name = scanner.nextLine();
+        if (isBookExist(name)){
+            try {
+                Connection connection=ConnectionFactory.getConnection();
+                Statement statement=connection.createStatement();
 
+                String query="select * from books where book_name='"+name+"'";
+
+                ResultSet resultSet = statement.executeQuery(query);
+                if (resultSet.next()) {
+                    int rating = resultSet.getInt(7);
+                    rating++;
+
+                    String update = "update books set `rating` = '" + rating + "' where book_name ='" + name + "'";
+                    statement.executeUpdate(update);
+                }
+            }
+            catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+
+    }
+    public boolean isBookExist(String name) {
+        try {
+            Connection connection = ConnectionFactory.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query="select * from books where book_name='"+name+"'";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

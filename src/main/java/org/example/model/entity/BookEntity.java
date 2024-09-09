@@ -7,6 +7,7 @@ private String authorName;
 private String genre;
 private int releaseYear;
 private int pages;
+private int rating;
 
 
     public int getIsbn() {
@@ -60,6 +61,15 @@ private int pages;
 
     public BookEntity setPages(int pages) {
         this.pages = pages;
+        return this;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public BookEntity setRating(int rating) {
+        this.rating = rating;
         return this;
     }
 }

@@ -42,6 +42,8 @@ public class Main {
 //         String name = scanner.nextLine();
 //         bookServiceImpl.findBookByName(name);
 
+        bookServiceImpl.addRating();
+
                         //USER
 
         //Display all users for admin purpose - only for ADMINS
