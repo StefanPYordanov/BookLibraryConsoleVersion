@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.config.ConnectionFactory;
+import org.example.helper.Validator;
 import org.example.model.entity.UserEntity;
 
 import java.sql.Connection;
@@ -41,40 +42,64 @@ public class UserServiceImpl implements UserService {
         try{
             Scanner scanner = new Scanner(System.in);
             UserEntity userEntity = new UserEntity();
+            Validator validator = new Validator();
 
+            //      ID
             int id = nextUserId();
             userEntity.setId(id);
+
+            //      USERNAME
             System.out.println("username");
             String username = scanner.nextLine();
+            while (validator.isFieldEmpty(username)|| validator.isUsernameExist(username)){
+                System.out.println("try again with username");
+                username = scanner.nextLine();
+            }
             userEntity.setUsername(username);
+
+            //       PASSWORD
             System.out.println("password");
             String password = scanner.nextLine();
-            userEntity.setPassword(password);
+
             System.out.println("repeat password");
             String rePass = scanner.nextLine();
+            while (!validator.isPasswordsMatch(password, rePass) || validator.isFieldEmpty(password) || validator.isFieldEmpty(rePass)){
+                System.out.println("try again with password");
+                password = scanner.nextLine();
+                System.out.println("try again to repeat password");
+                rePass = scanner.nextLine();
+            }
+            userEntity.setPassword(password);
+
+            //      EMAIL
             System.out.println("email");
             String email = scanner.nextLine();
+            while (!validator.isEmailValid(email) || validator.isEmailExist(email) || validator.isFieldEmpty(email)){
+                System.out.println("try again with email");
+                email = scanner.nextLine();
+            }
             userEntity.setEmail(email);
+
+            //      FULL NAME
             System.out.println("full name");
             String fullName = scanner.nextLine();
+            while (validator.isFieldEmpty(fullName)){
+                System.out.println("try again with full name");
+                fullName = scanner.nextLine();
+            }
             userEntity.setFullName(fullName);
+
+            //      ROLE
             String role = "User";
             userEntity.setRole(role);
 
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            if (password.equals(rePass)){
                 String query = "insert into users values ('"+id+"','"+username
                         +"','"+password+"','"+email+"','"+fullName
                         +"','"+role+"')";
                 statement.executeUpdate(query);
-
-            }else{
-                System.out.println("Passwords mismatch");
-            }
-
-
 
         }catch (Exception e){
             System.out.println(e);

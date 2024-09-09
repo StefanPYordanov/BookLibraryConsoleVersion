@@ -15,12 +15,12 @@ import java.util.regex.Pattern;
 public class Main {
     public static void main(String[] args) {
 
-//        Scanner scanner = new Scanner(System.in);
-//        BookServiceImpl bookServiceImpl = new BookServiceImpl();
-//        UserServiceImpl userServiceImpl = new UserServiceImpl();
-//        UserEntity userEntity = new UserEntity();
-//        Menu menu = new Menu();
-//        Validator validator = new Validator();
+        Scanner scanner = new Scanner(System.in);
+        BookServiceImpl bookServiceImpl = new BookServiceImpl();
+        UserServiceImpl userServiceImpl = new UserServiceImpl();
+        UserEntity userEntity = new UserEntity();
+        Menu menu = new Menu();
+        Validator validator = new Validator();
 
 
 
@@ -43,9 +43,6 @@ public class Main {
 //         bookServiceImpl.findBookByName(name);
 
                         //USER
-
-        //Add user test functionality - only for NOT-USERS/REGISTRATION
-//        userServiceImpl.addUser();
 
         //Display all users for admin purpose - only for ADMINS
 //        userServiceImpl.displayUsers();
@@ -79,6 +76,7 @@ public class Main {
 //        System.out.println(validator.isEmailExist("stefan@gmail.com"));
 //        System.out.println(validator.isEmailValid("sttt@gmail.com"));
 //        System.out.println(validator.isPasswordsMatch("stefan", "stefan"));
+//        System.out.println(validator.isFieldEmpty("assa"));
 
 
     }

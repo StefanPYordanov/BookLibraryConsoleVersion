@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validator {
-   public boolean isPasswordsMatch (String password, String rePassword){ //return true if match
+   public boolean isPasswordsMatch (String password, String rePassword){ //return true if match -> true for continue
        if (password.equals(rePassword)){
            return true;
        }else{
@@ -17,7 +17,7 @@ public class Validator {
            return false;
        }
     }
-    public boolean isEmailValid(String email){ //return true if email is valid
+    public boolean isEmailValid(String email){ //return true if email is valid -> true for continue
         String regex = "^\\S+@\\S+\\.\\S+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
@@ -28,7 +28,7 @@ public class Validator {
             return false;
         }
     }
-    public boolean isUsernameExist(String username){ //return true if exist
+    public boolean isUsernameExist(String username){ //return true if exist -> true for continue
         try{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
@@ -45,10 +45,10 @@ public class Validator {
             }
 
         }catch (Exception e){
-            return false;
+            return true;
         }
     }
-    public boolean isEmailExist(String email){ //return true if exist
+    public boolean isEmailExist(String email){ //return true if exist -> true for continue
         try{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
@@ -67,5 +67,16 @@ public class Validator {
         }catch (Exception e){
             return true;
         }
+    }
+    public boolean isFieldEmpty(String param){
+       if
+
+
+       (param.length() < 4){
+           System.out.println("Field must contain at least 4 symbols");
+           return true;
+       }
+
+       return false;
     }
 }
