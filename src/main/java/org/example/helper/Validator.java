@@ -9,26 +9,27 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validator {
-   public boolean isPasswordsMatch (String password, String rePassword){ //return true if match -> true for continue
+   public boolean isPasswordsMatch (String password, String rePassword){ // -> return true if passwords match
        if (password.equals(rePassword)){
            return true;
        }else{
-           System.out.println("Passwords mismatch");
+           System.out.println("Passwords don't match!");
            return false;
        }
     }
-    public boolean isEmailValid(String email){ //return true if email is valid -> true for continue
+    public boolean isEmailValid(String email){ // -> return true if user email is valid
         String regex = "^\\S+@\\S+\\.\\S+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
+
         if (matcher.find()){
             return true;
         }else{
-            System.out.println("Invalid email format");
+            System.out.println("Invalid email format!");
             return false;
         }
     }
-    public boolean isUsernameExist(String username){ //return true if exist -> true for continue
+    public boolean isUsernameExist(String username){ // -> return true if user already exist in DB
         try{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
@@ -38,17 +39,16 @@ public class Validator {
             ResultSet resultSet = statement.executeQuery(query);
 
             if (resultSet.next()){
-                System.out.println("Username already exist");
+                System.out.println("Username already exist!");
                 return true;
-            } else {
+            }else{
                 return false;
             }
-
         }catch (Exception e){
             return true;
         }
     }
-    public boolean isEmailExist(String email){ //return true if exist -> true for continue
+    public boolean isEmailExist(String email){ // -> return true if email exist in DB
         try{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
@@ -58,25 +58,48 @@ public class Validator {
             ResultSet resultSet = statement.executeQuery(query);
 
             if (resultSet.next()){
-                System.out.println("Email already exist");
+                System.out.println("Email already exist!");
                 return true;
-            }else {
+            }else{
                 return false;
             }
-
         }catch (Exception e){
             return true;
         }
     }
-    public boolean isFieldEmpty(String param){
-       if
-
-
-       (param.length() < 4){
-           System.out.println("Field must contain at least 4 symbols");
+    public boolean isFieldEmpty(String param){ //-> Check if someone try to input empty text or only few letters
+       if (param.length() < 4){
+           System.out.println("Field must contain at least 4 symbols!");
+           return true;
+       }else{
+           return false;
+       }
+    }
+    public boolean isIsbnValid (int isbn){ //-> Check if isbn is a positive number
+       if (isbn < 0){
+           System.out.println("Must be positive number!");
+           return false;
+       }else{
            return true;
        }
+    }
+    public boolean isUserIdExist (int id){ // -> Check if there are users with this id
+        try{
+            Connection connection = ConnectionFactory.getConnection();
+            Statement statement = connection.createStatement();
 
-       return false;
+            String query = "select id from users where id = '"+id+"'";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()){
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
+            return true;
+        }
     }
 }
+

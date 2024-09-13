@@ -30,7 +30,7 @@ public class Main {
 //        bookServiceImpl.addBook();
 
         //Display all books test functionality - for USERS and NOT-USERS
-//        bookServiceImpl.displayBooks();
+        bookServiceImpl.displayBooks();
 
         //Delete book test functionality - only for ADMINS
 //        System.out.println("isbn to delete");
@@ -42,7 +42,9 @@ public class Main {
 //         String name = scanner.nextLine();
 //         bookServiceImpl.findBookByName(name);
 
-        bookServiceImpl.addRating();
+//        bookServiceImpl.mostRatedBooks();
+
+//        bookServiceImpl.addRating();
 
                         //USER
 
@@ -81,6 +83,119 @@ public class Main {
 //        System.out.println(validator.isFieldEmpty("assa"));
 
 
+//        menu.nonUserMenu();
+//        String menuChoice = scanner.nextLine();
+//        boolean appRunning = true;
+//
+//        // Loop for program running
+//        while (appRunning){
+//
+//
+//
+//// Loop for starting menu
+//
+//            switch (menuChoice) {
+//
+//                // Case if user chose to login
+//                case "1":
+//                    System.out.println("Please Enter your username:");
+//                    String username = scanner.nextLine();
+//                    System.out.println("Please Enter your password");
+//                    String password = scanner.nextLine();
+//
+//// Loop for login data
+//                    while (!userServiceImpl.login(username, password)){
+//                        System.out.println("Please Enter your username:");
+//                         username = scanner.nextLine();
+//                        System.out.println("Please Enter your password");
+//                         password = scanner.nextLine();
+//                    } //While Loop END !!!
+//
+//
+//// if-else if user is admin or common user
+//                    // if user si admin case
+//                    if (userServiceImpl.isAdmin(username)){
+//                        menu.adminMenu();
+//                        menuChoice = scanner.nextLine();
+//                        switch (menuChoice){
+//                            case "1":
+//                                System.out.println("add book");
+//
+//                                break;
+//                            case "2":
+//                                System.out.println("book list");
+//                                break;
+//                            case "3":
+//                                System.out.println("rate book");
+//                                break;
+//                            case "4":
+//                                System.out.println("most rating");
+//                                break;
+//                            case "5":
+//                                System.out.println("logout");
+//                                break;
+//                            case "6":
+//                                System.out.println("delete book");
+//                                break;
+//                            case "7":
+//                                System.out.println("block user");
+//                                break;
+//                            case "8":
+//                                System.out.println("give role");
+//                                break;
+//                            case "9":
+//                                appRunning = false;
+//                                break;
+//                            default:
+//                                System.out.println("Invalid command, please select from existing one");
+//                                menuChoice = scanner.nextLine();
+//                                break;
+//                        }
+//
+//
+//
+//
+//
+//                    }else{
+//                        menu.userMenu();
+//                    }
+//
+//
+//
+//
+//
+////Case 1 for login END !!!
+//                    break;
+//
+//
+//                case "2":
+//                    System.out.println("register");
+//                    break;
+//                case "3":
+//                    System.out.println("see book");
+//                    break;
+//                case "9":
+//                    appRunning = false;
+//                    break;
+//                default:
+//                    System.out.println("Invalid command, please select from existing one");
+//
+//            }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//            if (!menuChoice.equals("9")){
+//                menuChoice = scanner.nextLine();
+//            }
+//
+//        }
     }
 
     }

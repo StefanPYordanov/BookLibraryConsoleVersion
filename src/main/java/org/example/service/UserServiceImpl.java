@@ -7,15 +7,12 @@ import org.example.model.entity.UserEntity;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class UserServiceImpl implements UserService {
 
     @Override
-    public void login(String username, String password) {
+    public boolean login(String username, String password) {
         try {
             Connection connection=ConnectionFactory.getConnection();
             Statement statement=connection.createStatement();
@@ -26,19 +23,22 @@ public class UserServiceImpl implements UserService {
 
             if (!resultSet.next()){
                 System.out.println("Invalid username or password !");
+                return false;
             }else{
                 String fullName = resultSet.getString(5);
                 System.out.println("Welcome " + fullName);
+                return true;
             }
 
         }
         catch (Exception e) {
             System.out.println(e);
+            return false;
         }
     }
 
     @Override
-    public void register() {
+    public String register() {
         try{
             Scanner scanner = new Scanner(System.in);
             UserEntity userEntity = new UserEntity();
@@ -100,18 +100,27 @@ public class UserServiceImpl implements UserService {
                         +"','"+password+"','"+email+"','"+fullName
                         +"','"+role+"')";
                 statement.executeUpdate(query);
+                return username + " " + password;
 
         }catch (Exception e){
             System.out.println(e);
         }
+        return null;
+
     }
 
     @Override
     public void deleteUser(int id) {
+        Validator validator = new Validator();
+        Scanner scanner = new Scanner(System.in);
         try {
             Connection connection=ConnectionFactory.getConnection();
             Statement statement=connection.createStatement();
 
+            while (!validator.isUserIdExist(id)){
+                System.out.println("User don't exist");
+                id = scanner.nextInt();
+            }
             String query="delete from users where id='"+id+"'";
             statement.executeUpdate(query);
         }
@@ -149,9 +158,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void giveRole(int id) {
+        Validator validator = new Validator();
+        Scanner scanner = new Scanner(System.in);
         try {
             Connection connection=ConnectionFactory.getConnection();
             Statement statement=connection.createStatement();
+
+            while (!validator.isUserIdExist(id)){
+                System.out.println("User don't exist");
+                id = scanner.nextInt();
+            }
 
             String query="select * from users where id='"+id+"'";
 
@@ -186,5 +202,28 @@ public class UserServiceImpl implements UserService {
         }
         return 0;
     }
+    @Override
+    public boolean isAdmin(String username) {
+        try{
+            Connection connection = ConnectionFactory.getConnection();
+            Statement statement = connection.createStatement();
 
+            String query = "select * from users where username = '"+username+"'";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()){
+                if(resultSet.getString(6).equals("Admin")){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+        }catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+        return false;
+    }
 }
