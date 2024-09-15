@@ -51,7 +51,6 @@ public class tester {
                                 break;
                             case "3":
                                 bookServiceImpl.addRating();
-                                System.out.println("Thank you for your vote !");
                                 break;
                             case "4":
                                 bookServiceImpl.mostRatedBooks();
@@ -70,12 +69,14 @@ public class tester {
                                 System.out.println("Please enter the id of the user you want to delete:");
                                 int idToDeleteUser = scanner.nextInt();
                                 userServiceImpl.deleteUser(idToDeleteUser);
+                                choice = scanner.nextLine();
                                 break;
                             case"8":
                                 userServiceImpl.displayUsers();
                                 System.out.println("Please enter the id of the user you want to become admin:");
                                 int idToBecomeAdmin = scanner.nextInt();
                                 userServiceImpl.giveRole(idToBecomeAdmin);
+                                choice = scanner.nextLine();
                                 break;
                             case "9":
                                 System.exit(0);
@@ -102,7 +103,6 @@ public class tester {
                                     break;
                                 case "3":
                                     bookServiceImpl.addRating();
-                                    System.out.println("Thank you for your vote !");
                                     break;
                                 case "4":
                                     bookServiceImpl.mostRatedBooks();
@@ -147,7 +147,6 @@ public class tester {
                                 break;
                             case "3":
                                 bookServiceImpl.addRating();
-                                System.out.println("Thank you for your vote !");
                                 break;
                             case "4":
                                 bookServiceImpl.mostRatedBooks();

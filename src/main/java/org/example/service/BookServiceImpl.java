@@ -70,6 +70,7 @@ public class BookServiceImpl implements BookService{
             +"','"+bookEntity.getAuthorName()+"','"+bookEntity.getGenre()+"','"+bookEntity.getReleaseYear()
             +"','"+bookEntity.getPages()+"','"+bookEntity.getRating()+"')";
     statement.executeUpdate(query);
+        System.out.println(bookEntity.getBookName() + " has been added to library!\n");
 
     }catch (Exception e){
     System.out.println(e);
@@ -86,7 +87,7 @@ public class BookServiceImpl implements BookService{
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()){
-                System.out.println("*ISBN* : " + resultSet.getString(1)
+                System.out.println("\n*ISBN* : " + resultSet.getString(1)
                         + " *Title* : " + resultSet.getString(2)
                         + " *Author* : " + resultSet.getString(3)
                         + " *Genre* : " + resultSet.getString(4)
@@ -111,6 +112,7 @@ public class BookServiceImpl implements BookService{
 
                 String query = "delete from books where book_name='" + name + "'";
                 statement.executeUpdate(query);
+            System.out.println(name + " has been removed from library!\n");
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -125,7 +127,7 @@ public class BookServiceImpl implements BookService{
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()){
-                System.out.println("*ISBN* : " + resultSet.getString(1)
+                System.out.println("\n\n*ISBN* : " + resultSet.getString(1)
                         + " *Title* : " + resultSet.getString(2)
                         + " *Author* : " + resultSet.getString(3)
                         + " *Genre* : " + resultSet.getString(4)
@@ -155,6 +157,7 @@ public class BookServiceImpl implements BookService{
                     rating++;
                     String update = "update books set `rating` = '" + rating + "' where book_name ='" + name + "'";
                     statement.executeUpdate(update);
+                    System.out.println("Thank you for your vote !\n");
                 }
             }
             catch (Exception e) {
@@ -191,7 +194,7 @@ public class BookServiceImpl implements BookService{
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()){
-                System.out.println("*ISBN* : " + resultSet.getString(1)
+                System.out.println("\n\n*ISBN* : " + resultSet.getString(1)
                         + " *Title* : " + resultSet.getString(2)
                         + " *Author* : " + resultSet.getString(3)
                         + " *Genre* : " + resultSet.getString(4)
