@@ -1,10 +1,12 @@
 package org.example.helper;
 
 import org.example.config.ConnectionFactory;
+import org.example.model.entity.BookEntity;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +36,7 @@ public class Validator {
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "select username from users where username = '"+username+"'";
+            String query = "SELECT username FROM users WHERE username = '"+username+"'";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -53,7 +55,7 @@ public class Validator {
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "select email from users where email = '"+email+"'";
+            String query = "SELECT email FROM users WHERE email = '"+email+"'";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -88,7 +90,7 @@ public class Validator {
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "select id from users where id = '"+id+"'";
+            String query = "SELECT id FROM users WHERE id = '"+id+"'";
 
             ResultSet resultSet = statement.executeQuery(query);
 

@@ -8,5 +8,5 @@ public interface UserService {
     public void giveRole(int id);
     public  int nextUserId();
     public boolean isAdmin (String username);
-
+    public int findUser(String currentUser);
 }

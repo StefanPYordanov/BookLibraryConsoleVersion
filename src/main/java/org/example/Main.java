@@ -38,7 +38,10 @@ public class Main {
                             switch (choice) {
                                 case "1" -> bookServiceImpl.addBook();
                                 case "2" -> bookServiceImpl.displayBooks();
-                                case "3" -> bookServiceImpl.addRating();
+                                case "3" -> {
+                                    int userId = userServiceImpl.findUser(currentUser);
+                                    bookServiceImpl.vote(userId);
+                                }
                                 case "4" -> bookServiceImpl.mostRatedBooks();
                                 case "5" -> {
                                     currentUser = "";
@@ -78,7 +81,10 @@ public class Main {
                             switch (choice) {
                                 case "1" -> bookServiceImpl.addBook();
                                 case "2" -> bookServiceImpl.displayBooks();
-                                case "3" -> bookServiceImpl.addRating();
+                                case "3" -> {
+                                    int userId = userServiceImpl.findUser(currentUser);
+                                    bookServiceImpl.vote(userId);
+                                }
                                 case "4" -> bookServiceImpl.mostRatedBooks();
                                 case "5" -> {
                                     currentUser = "";
@@ -104,7 +110,10 @@ public class Main {
                         switch (choice) {
                             case "1" -> bookServiceImpl.addBook();
                             case "2" -> bookServiceImpl.displayBooks();
-                            case "3" -> bookServiceImpl.addRating();
+                            case "3" -> {
+                                int userId = userServiceImpl.findUser(currentUser);
+                                bookServiceImpl.vote(userId);
+                            }
                             case "4" -> bookServiceImpl.mostRatedBooks();
                             case "5" -> {
                                 currentUser = "";

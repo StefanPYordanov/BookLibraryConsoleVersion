@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
             Connection connection=ConnectionFactory.getConnection();
             Statement statement=connection.createStatement();
 
-            String query="select * from users where username='"+username+"' and password= '"+password+"' ";
+            String query="SELECT * FROM users WHERE username='"+username+"' and password= '"+password+"' ";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-                String query = "insert into users values ('"+id+"','"+username
+                String query = "INSERT INTO users VALUES ('"+id+"','"+username
                         +"','"+password+"','"+email+"','"+fullName
                         +"','"+role+"')";
                 statement.executeUpdate(query);
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
                 System.out.println("User don't exist \nPlease enter existing id:");
                 id = scanner.nextInt();
             }
-            String query="delete from users where id='"+id+"'";
+            String query="DELETE FROM users WHERE id='"+id+"'";
             statement.executeUpdate(query);
             System.out.println("User has been blocked!\n");
         }
@@ -122,16 +122,18 @@ public class UserServiceImpl implements UserService {
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "select * from users";
+            String query = "SELECT * FROM users";
 
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()){
-                System.out.println("\n*ID* : " + resultSet.getString(1)
+                StringBuilder builder = new StringBuilder();
+                builder.append("\n*ID* : " + resultSet.getString(1)
                         + " *Username* :" + resultSet.getString(2)
                         + " *Email* : " + resultSet.getString(4)
                         + " *Full Name* : " + resultSet.getString(5)
                         + " *Role* : " + resultSet.getString(6));
+                System.out.println(builder.toString());
             }
         }catch (Exception e){
             System.out.println(e);
@@ -149,11 +151,11 @@ public class UserServiceImpl implements UserService {
                 System.out.println("User don't exist \nPlease enter existing id:");
                 id = scanner.nextInt();
             }
-            String query="select * from users where id='"+id+"'";
+            String query="SELECT * FROM users WHERE id='"+id+"'";
 
             ResultSet resultSet = statement.executeQuery(query);
 
-            String update = "update users set `role` = 'Admin' where id ='"+id+"'";
+            String update = "UPDATE users SET `role` = 'Admin' WHERE id ='"+id+"'";
             statement.executeUpdate(update);
             System.out.println("Successfully promoted user!\n");
         }
@@ -167,7 +169,7 @@ public class UserServiceImpl implements UserService {
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "select * from users order by id desc limit 0, 1";
+            String query = "SELECT * FROM users ORDER BY id DESC LIMIT 0, 1";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -185,7 +187,7 @@ public class UserServiceImpl implements UserService {
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "select * from users where username = '"+username+"'";
+            String query = "SELECT * FROM users WHERE username = '"+username+"'";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -201,5 +203,22 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return false;
+    }
+    public int findUser(String currentUser){
+        try{
+            Connection connection = ConnectionFactory.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT id FROM users WHERE username = '"+currentUser+"'";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        }catch (Exception e){
+            return 0;
+        }
+        return 0;
     }
 }

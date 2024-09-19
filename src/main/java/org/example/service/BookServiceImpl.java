@@ -7,6 +7,8 @@ import org.example.model.entity.BookEntity;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class BookServiceImpl implements BookService{
@@ -66,7 +68,7 @@ public class BookServiceImpl implements BookService{
     Connection connection = ConnectionFactory.getConnection();
     Statement statement = connection.createStatement();
 
-    String query = "insert into books values ('"+bookEntity.getIsbn()+"','"+bookEntity.getBookName()
+    String query = "INSERT INTO books VALUES ('"+bookEntity.getIsbn()+"','"+bookEntity.getBookName()
             +"','"+bookEntity.getAuthorName()+"','"+bookEntity.getGenre()+"','"+bookEntity.getReleaseYear()
             +"','"+bookEntity.getPages()+"','"+bookEntity.getRating()+"')";
     statement.executeUpdate(query);
@@ -82,18 +84,20 @@ public class BookServiceImpl implements BookService{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "select * from books";
+            String query = "SELECT * FROM books";
 
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()){
-                System.out.println("\n*ISBN* : " + resultSet.getString(1)
+                StringBuilder builder = new StringBuilder();
+                builder.append("\n*ISBN* : " + resultSet.getString(1)
                         + " *Title* : " + resultSet.getString(2)
                         + " *Author* : " + resultSet.getString(3)
                         + " *Genre* : " + resultSet.getString(4)
                         + " *Release Year* : " + resultSet.getString(5)
                         + " *Pages* : " + resultSet.getString(6)
-                        +" *Rating* : " + resultSet.getString(7)); //-> TODO: Use String Builder and optimize printing
+                        +" *Rating* : " + resultSet.getString(7));
+                System.out.println(builder.toString());
             }
         }catch (Exception e){
             System.out.println(e);
@@ -110,52 +114,26 @@ public class BookServiceImpl implements BookService{
                 Connection connection = ConnectionFactory.getConnection();
                 Statement statement = connection.createStatement();
 
-                String query = "delete from books where book_name='" + name + "'";
+                String query = "DELETE FROM books WHERE book_name='" + name + "'";
                 statement.executeUpdate(query);
             System.out.println(name + " has been removed from library!\n");
             } catch (Exception e) {
                 System.out.println(e);
             }
         }
-    public void findBookByName(String name){ //-> Finding book by name
-        try {
-            Connection connection=ConnectionFactory.getConnection();
-            Statement statement=connection.createStatement();
-
-            String query="select * from books where book_name='"+name+"'";
-
-            ResultSet resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()){
-                System.out.println("\n\n*ISBN* : " + resultSet.getString(1)
-                        + " *Title* : " + resultSet.getString(2)
-                        + " *Author* : " + resultSet.getString(3)
-                        + " *Genre* : " + resultSet.getString(4)
-                        + " *Release Year* : " + resultSet.getString(5)
-                        + " *Pages* : " + resultSet.getString(6)
-                        +" *Rating* : " + resultSet.getString(7)); //-> TODO: Use String Builder and optimize printing
-            }
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-    public void addRating(){ // TODO: Hide rating when user vote for book, can vote for different books
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter title to rate for book:");
-        String name = scanner.nextLine();
+    public void addRating(String name){
         if (isBookExist(name)){
             try{
                 Connection connection=ConnectionFactory.getConnection();
                 Statement statement=connection.createStatement();
 
-                String query="select * from books where book_name='"+name+"'";
+                String query="SELECT * FROM books WHERE book_name='"+name+"'";
 
                 ResultSet resultSet = statement.executeQuery(query);
                 if (resultSet.next()) {
                     int rating = resultSet.getInt(7);
                     rating++;
-                    String update = "update books set `rating` = '" + rating + "' where book_name ='" + name + "'";
+                    String update = "UPDATE books SET `rating` = '" + rating + "' WHERE book_name ='" + name + "'";
                     statement.executeUpdate(update);
                     System.out.println("Thank you for your vote !\n");
                 }
@@ -163,6 +141,8 @@ public class BookServiceImpl implements BookService{
             catch (Exception e) {
                 System.out.println(e);
             }
+        }else{
+            System.out.println("Book don't exist!");
         }
     }
     public boolean isBookExist(String name) { //-> Check if book exist in DB
@@ -170,7 +150,7 @@ public class BookServiceImpl implements BookService{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query="select * from books where book_name='"+name+"'";
+            String query="SELECT * FROM books WHERE book_name='"+name+"'";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -189,19 +169,65 @@ public class BookServiceImpl implements BookService{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "select * from books order by rating desc";
+            String query = "SELECT * FROM books ORDER BY rating DESC";
 
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()){
-                System.out.println("\n\n*ISBN* : " + resultSet.getString(1)
+                StringBuilder builder = new StringBuilder();
+                builder.append("\n*ISBN* : " + resultSet.getString(1)
                         + " *Title* : " + resultSet.getString(2)
                         + " *Author* : " + resultSet.getString(3)
                         + " *Genre* : " + resultSet.getString(4)
                         + " *Release Year* : " + resultSet.getString(5)
                         + " *Pages* : " + resultSet.getString(6)
-                        +" *Rating* : " + resultSet.getString(7)); //-> TODO: Use String Builder and optimize printing
+                        +" *Rating* : " + resultSet.getString(7));
+                System.out.println(builder.toString());
             }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+    public void vote(int userId) {
+        List<String> listOfTitles = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter title to vote for:");
+        String title = scanner.nextLine();
+        try{
+            Connection connection = ConnectionFactory.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT title FROM ratings WHERE user_id = '"+ userId +"'";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()){
+                //resultSet return list of books for user id
+                if (resultSet.getString(1).equals(title)){
+                    System.out.println("You already voted for this book!");
+                    listOfTitles.add(resultSet.getString(1));
+                    break;
+                }else{
+                    listOfTitles.add(resultSet.getString(1));
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        if (!listOfTitles.contains(title)) {
+            addRating(title);
+            if (isBookExist(title)) {
+                countVote(userId, title);
+            }
+        }
+    }
+    public void countVote(int userId, String title){
+        try{
+            Connection connection = ConnectionFactory.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "INSERT INTO ratings VALUES ('"+ userId +"','"+title+"')";
+            statement.executeUpdate(query);
         }catch (Exception e){
             System.out.println(e);
         }
