@@ -204,7 +204,7 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-    public int findUser(String currentUser){
+    public int findUser(String currentUser){ // -> find user id for vote method
         try{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();

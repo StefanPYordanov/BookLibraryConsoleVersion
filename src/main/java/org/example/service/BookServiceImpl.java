@@ -121,7 +121,7 @@ public class BookServiceImpl implements BookService{
                 System.out.println(e);
             }
         }
-    public void addRating(String name){
+    public void addRating(String name){ // -> Add rating to book in DB
         if (isBookExist(name)){
             try{
                 Connection connection=ConnectionFactory.getConnection();
@@ -188,7 +188,7 @@ public class BookServiceImpl implements BookService{
             System.out.println(e);
         }
     }
-    public void vote(int userId) {
+    public void vote(int userId) { // -> Check if user is already voted, add vote is not
         List<String> listOfTitles = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter title to vote for:");
@@ -221,7 +221,7 @@ public class BookServiceImpl implements BookService{
             }
         }
     }
-    public void countVote(int userId, String title){
+    public void countVote(int userId, String title){ // -> Add data for vote in DB
         try{
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
