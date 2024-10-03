@@ -47,6 +47,7 @@ public class Validator {
                 return false;
             }
         }catch (Exception e){
+            System.out.println("No Such Username!!!");
             return true;
         }
     }
@@ -66,6 +67,7 @@ public class Validator {
                 return false;
             }
         }catch (Exception e){
+            System.out.println("No Such Email!!!");
             return true;
         }
     }
@@ -77,8 +79,8 @@ public class Validator {
            return false;
        }
     }
-    public boolean isIsbnValid (int isbn){ //-> Check if isbn is a positive number
-       if (isbn < 0){
+    public boolean isNumberValid (int number){ //-> Check if isbn is a positive number
+       if (number < 1){
            System.out.println("Must be positive number!");
            return false;
        }else{
@@ -100,6 +102,7 @@ public class Validator {
                 return false;
             }
         }catch (Exception e){
+            System.out.println("No Such User!!!");
             return true;
         }
     }
