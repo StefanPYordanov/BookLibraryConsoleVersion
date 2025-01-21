@@ -1,13 +1,14 @@
 package org.example.model.entity;
+
 public class BookEntity {
 
-private int isbn;
-private String bookName;
-private String authorName;
-private String genre;
-private int releaseYear;
-private int pages;
-private int rating;
+    private int isbn;
+    private String bookName;
+    private String authorName;
+    private String genre;
+    private int releaseYear;
+    private int pages;
+    private int rating;
 
 
     public int getIsbn() {

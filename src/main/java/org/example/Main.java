@@ -5,6 +5,7 @@ import org.example.service.BookServiceImpl;
 import org.example.service.UserServiceImpl;
 
 import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -48,9 +49,7 @@ public class Main {
                                     menu.nonUserMenu();
                                 }
                                 case "6" -> {
-                                    System.out.println("Please enter book name to delete book");
-                                    String bookToDelete = scanner.nextLine();
-                                    bookServiceImpl.deleteBook(bookToDelete);
+                                    bookServiceImpl.deleteBook();
                                 }
                                 case "7" -> {
                                     userServiceImpl.displayUsers();

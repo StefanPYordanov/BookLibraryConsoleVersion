@@ -1,7 +1,5 @@
 package org.example.model.entity;
 
-import org.example.helper.Validator;
-
 public class UserEntity {
 
     private int id;
