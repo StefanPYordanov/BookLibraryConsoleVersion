@@ -2,12 +2,14 @@ package org.example.service;
 
 import org.example.config.ConnectionFactory;
 import org.example.helper.PasswordManager;
+import org.example.helper.UserMenu;
 import org.example.helper.Validator;
 import org.example.model.entity.UserEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserServiceImpl implements UserService {
@@ -15,6 +17,7 @@ public class UserServiceImpl implements UserService {
     Connection connection = ConnectionFactory.getConnection();
     Validator validator = new Validator();
     PasswordManager passwordManager = new PasswordManager();
+    UserMenu userMenu = new UserMenu();
 
     @Override
     public boolean login(String username, String password) {
@@ -37,7 +40,7 @@ public class UserServiceImpl implements UserService {
                     return false;
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't Login !!!");
             return false;
         }
@@ -47,48 +50,13 @@ public class UserServiceImpl implements UserService {
     public String register() {
         try {
             UserEntity userEntity = new UserEntity();
-            //      ID
-            int id = nextUserId();
-            userEntity.setId(id);
-            //      USERNAME
-            System.out.println("Please enter username:");
-            String username = scanner.nextLine();
-            while (validator.isFieldEmpty(username) || validator.isUsernameExist(username)) {
-                System.out.println("Please enter username:");
-                username = scanner.nextLine();
-            }
-            userEntity.setUsername(username);
-            //       PASSWORD
-            System.out.println("Please enter password:");
-            String password = scanner.nextLine();
-            System.out.println("Repeat password:");
-            String rePass = scanner.nextLine();
-            while (!validator.isPasswordsMatch(password, rePass) || validator.isFieldEmpty(password) || validator.isFieldEmpty(rePass)) {
-                System.out.println("Please enter password:");
-                password = scanner.nextLine();
-                System.out.println("Please repeat password:");
-                rePass = scanner.nextLine();
-            }
-            userEntity.setPassword(password);
-            //      EMAIL
-            System.out.println("Please enter email:");
-            String email = scanner.nextLine();
-            while (!validator.isEmailValid(email) || validator.isEmailExist(email) || validator.isFieldEmpty(email)) {
-                System.out.println("Please enter email:");
-                email = scanner.nextLine();
-            }
-            userEntity.setEmail(email);
-            //      FULL NAME
-            System.out.println("Please enter your full name:");
-            String fullName = scanner.nextLine();
-            while (validator.isFieldEmpty(fullName)) {
-                System.out.println("Please enter your full name:");
-                fullName = scanner.nextLine();
-            }
-            userEntity.setFullName(fullName);
-            //      ROLE
-            String role = "User";
-            userEntity.setRole(role);
+
+            userEntity.setId(nextUserId());
+            userEntity.setUsername(userMenu.registerUserMenuUsername());
+            userEntity.setPassword(userMenu.registerUserMenuPassword());
+            userEntity.setEmail(userMenu.registerUserMenuEmail());
+            userEntity.setFullName(userMenu.registerUserMenuFullName());
+            userEntity.setRole("User");
 
             String query = "INSERT INTO users (id, username, password, email, full_name, role) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -100,8 +68,8 @@ public class UserServiceImpl implements UserService {
             statement.setString(6, userEntity.getRole());
             statement.executeUpdate();
 
-            return username + " " + password;
-        } catch (Exception e) {
+            return userMenu.registerUserMenuUsername() + " " + userMenu.registerUserMenuPassword();
+        } catch (SQLException e) {
             System.out.println("Can't Register!!!");
         }
         return null;
@@ -111,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(int id) { // -> function for admins to block users
         try {
             while (!validator.isUserIdExist(id)) {
-                System.out.println("User don't exist \nPlease enter existing id:");
+                userMenu.userDoNotExistMenu();
                 id = scanner.nextInt();
             }
             String query = "DELETE FROM users WHERE id='" + id + "'";
@@ -140,7 +108,7 @@ public class UserServiceImpl implements UserService {
                         + " *Role* : " + resultSet.getString(6));
                 System.out.println(builder.toString());
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't Display users!!!");
         }
     }
@@ -149,7 +117,7 @@ public class UserServiceImpl implements UserService {
     public void giveRole(int id) { // -> function for admins to give role to other users
         try {
             while (!validator.isUserIdExist(id)) {
-                System.out.println("User don't exist \nPlease enter existing id:");
+                userMenu.userDoNotExistMenu();
                 id = scanner.nextInt();
             }
             String query = "SELECT * FROM users WHERE id='" + id + "'";
@@ -160,7 +128,7 @@ public class UserServiceImpl implements UserService {
             statement.executeUpdate(update);
 
             System.out.println("Successfully promoted user!\n");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't give role !!!");
         }
     }
@@ -189,14 +157,14 @@ public class UserServiceImpl implements UserService {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 if (resultSet.getString(6).equals("Admin")) {
                     return true;
                 } else {
                     return false;
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("No such admin !!!");
             return false;
         }

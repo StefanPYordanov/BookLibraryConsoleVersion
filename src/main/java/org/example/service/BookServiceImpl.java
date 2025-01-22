@@ -7,6 +7,7 @@ import org.example.model.entity.BookEntity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -43,7 +44,7 @@ public class BookServiceImpl implements BookService {
 
             System.out.println(bookEntity.getBookName() + " has been added to library!\n");
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't add book!!!");
         }
     }
@@ -66,7 +67,7 @@ public class BookServiceImpl implements BookService {
                         + " *Rating* : " + resultSet.getString(7));
                 System.out.println(builder.toString());
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't Display books!!!");
         }
     }
@@ -99,7 +100,7 @@ public class BookServiceImpl implements BookService {
                 }else {
                     System.out.println("Book don't exist!");
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println("Can't add rating!!!");
             }
         }
@@ -116,7 +117,7 @@ public class BookServiceImpl implements BookService {
             }
             return false;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("No Such book!!!");
             return false;
         }
@@ -141,7 +142,7 @@ public class BookServiceImpl implements BookService {
                         + " *Rating* : " + resultSet.getString(7));
                 System.out.println(builder.toString());
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't show most rated book!!!");
         }
     }
@@ -165,7 +166,7 @@ public class BookServiceImpl implements BookService {
                     listOfTitles.add(resultSet.getString(1));
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't Vote!!!");
         }
         if (!listOfTitles.contains(title)) {
@@ -184,7 +185,7 @@ public class BookServiceImpl implements BookService {
             statement.setString(2, title);
 
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't count vote!!!");
         }
     }
