@@ -1,22 +1,29 @@
 package org.example.config;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class ConnectionFactory {
-    public static final String user = "root";
-    public static final String password = "1234";
-    public static final String url = "jdbc:mysql://localhost:3306/library";
     static Connection connection;
-
     public static Connection getConnection() {
         try {
+            // Load Property file
+            Properties props = new Properties();
+            props.load(new FileInputStream("db.properties"));
+            // Read Property file
+            String user = props.getProperty("user");
+            String password = props.getProperty("password");
+            String url = props.getProperty("url");
+            // Get Connection to db
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url,
                     user, password);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException | IOException e) {
+            System.out.println("Connection to database FAIL !");
         }
         return connection;
     }

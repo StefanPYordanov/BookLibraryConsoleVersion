@@ -5,6 +5,7 @@ import org.example.helper.PasswordManager;
 import org.example.helper.UserMenu;
 import org.example.helper.Validator;
 import org.example.model.entity.UserEntity;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,8 +32,8 @@ public class UserServiceImpl implements UserService {
                 return false;
             } else {
                 String fullName = resultSet.getString(5);
-                String pass = resultSet.getString(3);
-                if (password.equals(passwordManager.passwordDecrypt(pass))) {
+                String pass  = resultSet.getString(3);
+                if (BCrypt.checkpw(password, pass)) {
                     System.out.println("Welcome " + fullName);
                     return true;
                 } else {
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userEntity.getId());
             statement.setString(2, userEntity.getUsername());
-            statement.setString(3, passwordManager.passwordEncrypt(userEntity.getPassword()));
+            statement.setString(3, BCrypt.hashpw(userMenu.registerUserMenuPassword(), BCrypt.gensalt()));
             statement.setString(4, userEntity.getEmail());
             statement.setString(5, userEntity.getFullName());
             statement.setString(6, userEntity.getRole());
