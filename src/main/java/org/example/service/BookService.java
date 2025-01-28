@@ -9,8 +9,6 @@ public interface BookService {
 
     public void addRating(String name);
 
-    public boolean isBookExist(String name);
-
     public void mostRatedBooks();
 
     public void vote(int userId);

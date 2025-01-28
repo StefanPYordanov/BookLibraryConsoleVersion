@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class BookMenu {
     Scanner scanner = new Scanner(System.in);
     Validator validator = new Validator();
-    BookServiceImpl bookServiceImpl = new BookServiceImpl();
 
     public int registerMenuIsbn() {
         // Enter whole data for the book
@@ -23,7 +22,7 @@ public class BookMenu {
         System.out.println("Please enter title:");
 //        String s = scanner.nextLine();
         String bookName = scanner.nextLine();
-        while (bookServiceImpl.isBookExist(bookName) || validator.isFieldEmpty(bookName)) {
+        while (validator.isBookExist(bookName) || validator.isFieldEmpty(bookName)) {
             System.out.println("Book already exist, please try with other book!");
             bookName = scanner.nextLine();
         }
@@ -68,7 +67,7 @@ public class BookMenu {
     public String deleteBookMenu(){
         System.out.println("Please enter book name to delete book");
         String bookToDelete = scanner.nextLine();
-        while (!bookServiceImpl.isBookExist(bookToDelete)) {
+        while (!validator.isBookExist(bookToDelete)) {
             System.out.println("Please chose from existing library");
             bookToDelete = scanner.nextLine();
         }

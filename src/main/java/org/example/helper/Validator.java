@@ -2,14 +2,12 @@ package org.example.helper;
 
 import org.example.config.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validator {
+    Connection connection;
     public boolean isPasswordsMatch(String password, String rePassword) { // -> return true if passwords match
         if (password.equals(rePassword)) {
             return true;
@@ -105,6 +103,22 @@ public class Validator {
         } catch (SQLException e) {
             System.out.println("No Such User!!!");
             return true;
+        }
+    }
+    public boolean isBookExist(String name) { //-> Check if book exist in DB
+        try {
+            String query = "SELECT * FROM books WHERE book_name='" + name + "'";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                return true;
+            }
+            return false;
+
+        } catch (SQLException e) {
+            System.out.println("No Such book!!!");
+            return false;
         }
     }
 }

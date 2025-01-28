@@ -13,7 +13,7 @@ public class ConnectionFactory {
         try {
             // Load Property file
             Properties props = new Properties();
-            props.load(new FileInputStream("db.properties"));
+            props.load(new FileInputStream(".\\src\\main\\resources\\db.properties"));
             // Read Property file
             String user = props.getProperty("user");
             String password = props.getProperty("password");
@@ -23,7 +23,8 @@ public class ConnectionFactory {
             connection = DriverManager.getConnection(url,
                     user, password);
         } catch (ClassNotFoundException | SQLException | IOException e) {
-            System.out.println("Connection to database FAIL !");
+//            System.out.println("Connection to database FAIL !");
+            e.printStackTrace();
         }
         return connection;
     }

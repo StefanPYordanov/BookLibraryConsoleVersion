@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.config.ConnectionFactory;
 import org.example.helper.BookMenu;
+import org.example.helper.Validator;
 import org.example.model.entity.BookEntity;
 
 import java.sql.Connection;
@@ -16,6 +17,7 @@ public class BookServiceImpl implements BookService {
     Scanner scanner = new Scanner(System.in);
     Connection connection = ConnectionFactory.getConnection();
     BookMenu bookMenu = new BookMenu();
+    Validator validator = new Validator();
 
     @Override
     public void addBook() { // -> Add book to DB
@@ -86,7 +88,7 @@ public class BookServiceImpl implements BookService {
     }
 
     public void addRating(String name) { // -> Add rating to book in DB
-        if (isBookExist(name)) {
+        if (validator.isBookExist(name)) {
             try {
                 String query = "SELECT * FROM books WHERE book_name='" + name + "'";
                 PreparedStatement statement = connection.prepareStatement(query);
@@ -105,24 +107,6 @@ public class BookServiceImpl implements BookService {
             }
         }
     }
-
-    public boolean isBookExist(String name) { //-> Check if book exist in DB
-        try {
-            String query = "SELECT * FROM books WHERE book_name='" + name + "'";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                return true;
-            }
-            return false;
-
-        } catch (SQLException e) {
-            System.out.println("No Such book!!!");
-            return false;
-        }
-    }
-
     @Override
     public void mostRatedBooks() { // -> Show books in order from the biggest rating to the lowest
         try {
@@ -171,7 +155,7 @@ public class BookServiceImpl implements BookService {
         }
         if (!listOfTitles.contains(title)) {
             addRating(title);
-            if (isBookExist(title)) {
+            if (validator.isBookExist(title)) {
                 countVote(userId, title);
             }
         }

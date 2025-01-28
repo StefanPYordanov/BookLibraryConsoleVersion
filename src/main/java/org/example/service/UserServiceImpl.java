@@ -7,6 +7,7 @@ import org.example.helper.Validator;
 import org.example.model.entity.UserEntity;
 import org.mindrot.jbcrypt.BCrypt;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,13 +64,13 @@ public class UserServiceImpl implements UserService {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userEntity.getId());
             statement.setString(2, userEntity.getUsername());
-            statement.setString(3, BCrypt.hashpw(userMenu.registerUserMenuPassword(), BCrypt.gensalt()));
+            statement.setString(3, BCrypt.hashpw(userEntity.getPassword(), BCrypt.gensalt()));
             statement.setString(4, userEntity.getEmail());
             statement.setString(5, userEntity.getFullName());
             statement.setString(6, userEntity.getRole());
             statement.executeUpdate();
 
-            return userMenu.registerUserMenuUsername() + " " + userMenu.registerUserMenuPassword();
+//            return userMenu.registerUserMenuUsername() + " " + userMenu.registerUserMenuPassword();
         } catch (SQLException e) {
             System.out.println("Can't Register!!!");
         }
