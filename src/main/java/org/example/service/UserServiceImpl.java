@@ -1,12 +1,10 @@
 package org.example.service;
 
 import org.example.config.ConnectionFactory;
-import org.example.helper.PasswordManager;
 import org.example.helper.UserMenu;
 import org.example.helper.Validator;
 import org.example.model.entity.UserEntity;
 import org.mindrot.jbcrypt.BCrypt;
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +16,6 @@ public class UserServiceImpl implements UserService {
     Scanner scanner = new Scanner(System.in);
     Connection connection = ConnectionFactory.getConnection();
     Validator validator = new Validator();
-    PasswordManager passwordManager = new PasswordManager();
     UserMenu userMenu = new UserMenu();
 
     @Override
@@ -33,17 +30,20 @@ public class UserServiceImpl implements UserService {
                 return false;
             } else {
                 String fullName = resultSet.getString(5);
-                String pass  = resultSet.getString(3);
+                String pass = resultSet.getString(3);
                 if (BCrypt.checkpw(password, pass)) {
                     System.out.println("Welcome " + fullName);
                     return true;
                 } else {
-                    System.out.println("Invalid username or password!");
-                    return false;
+                    throw new IllegalArgumentException();
                 }
             }
         } catch (SQLException e) {
             System.out.println("Can't Login !!!");
+            return false;
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid username or password!");
             return false;
         }
     }
@@ -70,11 +70,13 @@ public class UserServiceImpl implements UserService {
             statement.setString(6, userEntity.getRole());
             statement.executeUpdate();
 
-//            return userMenu.registerUserMenuUsername() + " " + userMenu.registerUserMenuPassword();
+            return userEntity.getUsername() + " " + userEntity.getPassword();
+
         } catch (SQLException e) {
             System.out.println("Can't Register!!!");
+            return null;
         }
-        return null;
+
     }
 
     @Override
@@ -89,7 +91,7 @@ public class UserServiceImpl implements UserService {
             statement.executeUpdate();
 
             System.out.println("User has been blocked!\n");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't delete user!!!");
         }
     }

@@ -15,7 +15,8 @@ public class UserMenu {
         }
         return username;
     }
-    public String registerUserMenuPassword(){
+
+    public String registerUserMenuPassword() {
         System.out.println("Please enter password:");
         String password = scanner.nextLine();
         System.out.println("Repeat password:");
@@ -28,7 +29,8 @@ public class UserMenu {
         }
         return password;
     }
-    public String registerUserMenuEmail(){
+
+    public String registerUserMenuEmail() {
         System.out.println("Please enter email:");
         String email = scanner.nextLine();
         while (!validator.isEmailValid(email) || validator.isEmailExist(email) || validator.isFieldEmpty(email)) {
@@ -37,7 +39,8 @@ public class UserMenu {
         }
         return email;
     }
-    public String registerUserMenuFullName(){
+
+    public String registerUserMenuFullName() {
         System.out.println("Please enter your full name:");
         String fullName = scanner.nextLine();
         while (validator.isFieldEmpty(fullName)) {
@@ -46,7 +49,8 @@ public class UserMenu {
         }
         return fullName;
     }
-    public void userDoNotExistMenu(){
+
+    public void userDoNotExistMenu() {
         System.out.println("User don't exist \nPlease enter existing id:");
     }
 }

@@ -1,7 +1,5 @@
 package org.example.helper;
 
-import org.example.service.BookServiceImpl;
-
 import java.util.Scanner;
 
 public class BookMenu {
@@ -18,9 +16,9 @@ public class BookMenu {
         return isbn;
     }
 
-    public String registerMenuTitle(){
+    public String registerMenuTitle() {
         System.out.println("Please enter title:");
-//        String s = scanner.nextLine();
+        String s = scanner.nextLine();
         String bookName = scanner.nextLine();
         while (validator.isBookExist(bookName) || validator.isFieldEmpty(bookName)) {
             System.out.println("Book already exist, please try with other book!");
@@ -29,7 +27,7 @@ public class BookMenu {
         return bookName;
     }
 
-    public String registerMenuAuthor(){
+    public String registerMenuAuthor() {
         System.out.println("Please enter author:");
         String author = scanner.nextLine();
         while (validator.isFieldEmpty(author)) {
@@ -38,7 +36,7 @@ public class BookMenu {
         return author;
     }
 
-    public String registerMenuGenre(){
+    public String registerMenuGenre() {
         System.out.println("Please enter genre:");
         String genre = scanner.nextLine();
         while (validator.isFieldEmpty(genre)) {
@@ -47,7 +45,7 @@ public class BookMenu {
         return genre;
     }
 
-    public int registerMenuReleaseYear(){
+    public int registerMenuReleaseYear() {
         System.out.println("Please enter the release year of the book");
         int releaseYear = scanner.nextInt();
         while (!validator.isNumberValid(releaseYear)) {
@@ -55,7 +53,8 @@ public class BookMenu {
         }
         return releaseYear;
     }
-    public int registerMenuPages(){
+
+    public int registerMenuPages() {
         System.out.println("Please enter book pages:");
         int pages = scanner.nextInt();
         while (!validator.isNumberValid(pages)) {
@@ -64,7 +63,7 @@ public class BookMenu {
         return pages;
     }
 
-    public String deleteBookMenu(){
+    public String deleteBookMenu() {
         System.out.println("Please enter book name to delete book");
         String bookToDelete = scanner.nextLine();
         while (!validator.isBookExist(bookToDelete)) {

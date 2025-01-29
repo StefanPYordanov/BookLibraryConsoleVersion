@@ -22,7 +22,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void addBook() { // -> Add book to DB
         BookEntity bookEntity = new BookEntity();
-        try{
+        try {
             bookEntity.setIsbn(bookMenu.registerMenuIsbn());
             bookEntity.setBookName(bookMenu.registerMenuTitle());
             bookEntity.setAuthorName(bookMenu.registerMenuAuthor());
@@ -76,13 +76,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook() { //-> Function for admins, to delete books
-            String bookToDelete = bookMenu.deleteBookMenu();
+        String bookToDelete = bookMenu.deleteBookMenu();
         try {
             String query = "DELETE FROM books WHERE book_name='" + bookToDelete + "'";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.executeUpdate();
             System.out.println(bookToDelete + " has been removed from library!\n");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Can't Delete book!!!");
         }
     }
@@ -99,7 +99,7 @@ public class BookServiceImpl implements BookService {
                     String update = "UPDATE books SET `rating` = '" + rating + "' WHERE book_name ='" + name + "'";
                     statement.executeUpdate(update);
                     System.out.println("Thank you for your vote !\n");
-                }else {
+                } else {
                     System.out.println("Book don't exist!");
                 }
             } catch (SQLException e) {
@@ -107,6 +107,7 @@ public class BookServiceImpl implements BookService {
             }
         }
     }
+
     @Override
     public void mostRatedBooks() { // -> Show books in order from the biggest rating to the lowest
         try {

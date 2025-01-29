@@ -7,7 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validator {
-    Connection connection;
+    Connection connection = ConnectionFactory.getConnection();
+
     public boolean isPasswordsMatch(String password, String rePassword) { // -> return true if passwords match
         if (password.equals(rePassword)) {
             return true;
@@ -53,7 +54,6 @@ public class Validator {
 
     public boolean isEmailExist(String email) { // -> return true if email exist in DB
         try {
-            Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
             String query = "SELECT email FROM users WHERE email = '" + email + "'";
@@ -92,7 +92,6 @@ public class Validator {
 
     public boolean isUserIdExist(int id) { // -> Check if there are users with this id
         try {
-            Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
 
             String query = "SELECT id FROM users WHERE id = '" + id + "'";
@@ -105,6 +104,7 @@ public class Validator {
             return true;
         }
     }
+
     public boolean isBookExist(String name) { //-> Check if book exist in DB
         try {
             String query = "SELECT * FROM books WHERE book_name='" + name + "'";

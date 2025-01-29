@@ -9,6 +9,7 @@ import java.util.Properties;
 
 public class ConnectionFactory {
     static Connection connection;
+
     public static Connection getConnection() {
         try {
             // Load Property file
@@ -23,8 +24,7 @@ public class ConnectionFactory {
             connection = DriverManager.getConnection(url,
                     user, password);
         } catch (ClassNotFoundException | SQLException | IOException e) {
-//            System.out.println("Connection to database FAIL !");
-            e.printStackTrace();
+            System.out.println("Connection to database FAIL !");
         }
         return connection;
     }
