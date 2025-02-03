@@ -1,6 +1,7 @@
 package org.example.helper;
 
-import org.example.config.ConnectionFactory;
+import org.example.repository.BookRepository;
+import org.example.repository.UserRepository;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -8,7 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validator {
-    Connection connection = ConnectionFactory.getConnection();
+    UserRepository userRepository = new UserRepository();
+    BookRepository bookRepository = new BookRepository();
 
     public boolean isPasswordsMatch(String password, String rePassword) { // -> return true if passwords match
         if (password.equals(rePassword)) {
@@ -34,12 +36,7 @@ public class Validator {
 
     public boolean isUsernameExist(String username) { // -> return true if user already exist in DB
         try {
-            Connection connection = ConnectionFactory.getConnection();
-            Statement statement = connection.createStatement();
-
-            String query = "SELECT username FROM users WHERE username = '" + username + "'";
-
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = userRepository.getUsernameByUser(username);
 
             if (resultSet.next()) {
                 System.out.println("Username already exist!");
@@ -55,11 +52,7 @@ public class Validator {
 
     public boolean isEmailExist(String email) { // -> return true if email exist in DB
         try {
-            Statement statement = connection.createStatement();
-
-            String query = "SELECT email FROM users WHERE email = '" + email + "'";
-
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = userRepository.getEmail(email);
 
             if (resultSet.next()) {
                 System.out.println("Email already exist!");
@@ -94,12 +87,7 @@ public class Validator {
 
     public boolean isUserIdExist(int id) { // -> Check if there are users with this id
         try {
-            Statement statement = connection.createStatement();
-
-            String query = "SELECT id FROM users WHERE id = '" + id + "'";
-
-            ResultSet resultSet = statement.executeQuery(query);
-
+        ResultSet resultSet = userRepository.getId(id);
             return resultSet.next();
         } catch (SQLException e) {
             System.out.println("No Such User!!!");
@@ -109,12 +97,8 @@ public class Validator {
 
     public boolean isBookExist(String name) { //-> Check if book exist in DB
         try {
-            String query = "SELECT * FROM books WHERE book_name='" + name + "'";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
+            ResultSet resultSet = bookRepository.getBookByName(name);
             return resultSet.next();
-
         } catch (SQLException e) {
             System.out.println("No Such book!!!");
             return false;

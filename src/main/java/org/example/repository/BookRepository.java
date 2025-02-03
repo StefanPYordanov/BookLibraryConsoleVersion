@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class BookRepository {
     Connection connection = ConnectionFactory.getConnection();
-    public int addBook (BookEntity bookEntity) throws SQLException {
+    public void addBook (BookEntity bookEntity) throws SQLException {
         String query = "INSERT INTO books (isbn, book_name, author_name, genre, release_year, pages, rating) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -22,13 +22,12 @@ public class BookRepository {
         statement.setInt(5, bookEntity.getReleaseYear());
         statement.setInt(6, bookEntity.getPages());
         statement.setInt(7, bookEntity.getRating());
-        return statement.executeUpdate();
+        statement.executeUpdate();
     }
     public ResultSet getAllBooks () throws SQLException {
         String query = "SELECT * FROM books";
         PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        return resultSet;
+        return statement.executeQuery();
     }
     public void deleteBookByName (String bookToDelete) throws SQLException {
         String query = "DELETE FROM books WHERE book_name='" + bookToDelete + "'";
@@ -38,8 +37,7 @@ public class BookRepository {
     public ResultSet getBookByName (String name) throws SQLException {
         String query = "SELECT * FROM books WHERE book_name='" + name + "'";
         PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        return resultSet;
+        return statement.executeQuery();
     }
     public void updateBookRatingByName (int rating, String name) throws SQLException {
         String query = "UPDATE books SET `rating` = '" + rating + "' WHERE book_name ='" + name + "'";
@@ -49,15 +47,13 @@ public class BookRepository {
     public ResultSet getBooksByRating () throws SQLException {
         String query = "SELECT * FROM books ORDER BY rating DESC";
         PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        return resultSet;
+        return statement.executeQuery();
 
     }
     public ResultSet getBookNameByUserId (int userId) throws SQLException {
         String query = "SELECT title FROM ratings WHERE user_id = '" + userId + "'";
         PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        return resultSet;
+        return statement.executeQuery();
     }
     public void addRating (int userId, String title){
         try {
