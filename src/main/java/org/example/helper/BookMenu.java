@@ -18,7 +18,7 @@ public class BookMenu {
 
     public String registerMenuTitle() {
         System.out.println("Please enter title:");
-        String s = scanner.nextLine();
+        scanner.nextLine(); // Clearing buffer
         String bookName = scanner.nextLine();
         while (validator.isBookExist(bookName) || validator.isFieldEmpty(bookName)) {
             System.out.println("Book already exist, please try with other book!");
@@ -48,7 +48,7 @@ public class BookMenu {
     public int registerMenuReleaseYear() {
         System.out.println("Please enter the release year of the book");
         int releaseYear = scanner.nextInt();
-        while (!validator.isNumberValid(releaseYear)) {
+        while (!validator.isYear(releaseYear)) {
             releaseYear = scanner.nextInt();
         }
         return releaseYear;

@@ -3,6 +3,7 @@ package org.example.helper;
 import org.example.config.ConnectionFactory;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,7 +74,8 @@ public class Validator {
     }
 
     public boolean isFieldEmpty(String param) { //-> Check if someone try to input empty text or only few letters
-        if (param.length() < 4) {
+
+        if (param.trim().length() < 4) {
             System.out.println("Field must contain at least 4 symbols!");
             return true;
         } else {
@@ -111,14 +113,19 @@ public class Validator {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                return true;
-            }
-            return false;
+            return resultSet.next();
 
         } catch (SQLException e) {
             System.out.println("No Such book!!!");
             return false;
+        }
+    }
+    public boolean isYear(int year){
+        if (year > LocalDate.now().getYear() || year < 1){
+            System.out.println("Invalid Year");
+            return false;
+        }else{
+            return true;
         }
     }
 }

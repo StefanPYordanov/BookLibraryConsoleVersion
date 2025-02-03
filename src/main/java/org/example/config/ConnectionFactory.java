@@ -23,8 +23,10 @@ public class ConnectionFactory {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url,
                     user, password);
-        } catch (ClassNotFoundException | SQLException | IOException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Connection to database FAIL !");
+        }catch(IOException e){
+            System.out.println("Property file missing !");
         }
         return connection;
     }

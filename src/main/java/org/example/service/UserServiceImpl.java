@@ -1,29 +1,25 @@
 package org.example.service;
 
-import org.example.config.ConnectionFactory;
 import org.example.helper.UserMenu;
 import org.example.helper.Validator;
 import org.example.model.entity.UserEntity;
+import org.example.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserServiceImpl implements UserService {
     Scanner scanner = new Scanner(System.in);
-    Connection connection = ConnectionFactory.getConnection();
     Validator validator = new Validator();
     UserMenu userMenu = new UserMenu();
+    UserRepository userRepository = new UserRepository();
 
     @Override
     public boolean login(String username, String password) {
         try {
-            String query = "SELECT * FROM users WHERE username='" + username + "'";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = userRepository.getUserByUsername(username);
 
             if (!resultSet.next()) {
                 System.out.println("Invalid username or password!");
@@ -60,15 +56,7 @@ public class UserServiceImpl implements UserService {
             userEntity.setFullName(userMenu.registerUserMenuFullName());
             userEntity.setRole("User");
 
-            String query = "INSERT INTO users (id, username, password, email, full_name, role) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, userEntity.getId());
-            statement.setString(2, userEntity.getUsername());
-            statement.setString(3, BCrypt.hashpw(userEntity.getPassword(), BCrypt.gensalt()));
-            statement.setString(4, userEntity.getEmail());
-            statement.setString(5, userEntity.getFullName());
-            statement.setString(6, userEntity.getRole());
-            statement.executeUpdate();
+            userRepository.addUser(userEntity);
 
             return userEntity.getUsername() + " " + userEntity.getPassword();
 
@@ -86,9 +74,7 @@ public class UserServiceImpl implements UserService {
                 userMenu.userDoNotExistMenu();
                 id = scanner.nextInt();
             }
-            String query = "DELETE FROM users WHERE id='" + id + "'";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.executeUpdate();
+              userRepository.deleteUserById(id);
 
             System.out.println("User has been blocked!\n");
         } catch (SQLException e) {
@@ -99,18 +85,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public void displayUsers() { // -> show all users from DB
         try {
-            String query = "SELECT * FROM users";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = userRepository.getAllUsers();
 
             while (resultSet.next()) {
                 StringBuilder builder = new StringBuilder();
-                builder.append("\n*ID* : " + resultSet.getString(1)
-                        + " *Username* :" + resultSet.getString(2)
-                        + " *Email* : " + resultSet.getString(4)
-                        + " *Full Name* : " + resultSet.getString(5)
-                        + " *Role* : " + resultSet.getString(6));
-                System.out.println(builder.toString());
+                builder.append("\n*ID* : ")
+                        .append(resultSet.getString(1))
+                        .append(" *Username* :")
+                        .append(resultSet.getString(2))
+                        .append(" *Email* : ")
+                        .append(resultSet.getString(4))
+                        .append(" *Full Name* : ")
+                        .append(resultSet.getString(5))
+                        .append(" *Role* : ")
+                        .append(resultSet.getString(6));
+                System.out.println(builder);
             }
         } catch (SQLException e) {
             System.out.println("Can't Display users!!!");
@@ -124,12 +113,8 @@ public class UserServiceImpl implements UserService {
                 userMenu.userDoNotExistMenu();
                 id = scanner.nextInt();
             }
-            String query = "SELECT * FROM users WHERE id='" + id + "'";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
-            String update = "UPDATE users SET `role` = 'Admin' WHERE id ='" + id + "'";
-            statement.executeUpdate(update);
+            userRepository.getUserById(id);
+            userRepository.updateUserRole(id);
 
             System.out.println("Successfully promoted user!\n");
         } catch (SQLException e) {
@@ -140,10 +125,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int nextUserId() { // -> increment id for users for next DB insert
         try {
-            String query = "SELECT * FROM users ORDER BY id DESC LIMIT 0, 1";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
+            ResultSet resultSet = userRepository.getBiggestUserId();
             if (resultSet.next()) {
                 return resultSet.getInt(1) + 1;
             }
@@ -157,16 +139,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isAdmin(String username) { // -> check if user is admin
         try {
-            String query = "SELECT * FROM users WHERE username = '" + username + "'";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
+            ResultSet resultSet = userRepository.getUserByUsername(username);
             if (resultSet.next()) {
-                if (resultSet.getString(6).equals("Admin")) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return resultSet.getString(6).equals("Admin");
             }
         } catch (SQLException e) {
             System.out.println("No such admin !!!");
@@ -177,11 +152,8 @@ public class UserServiceImpl implements UserService {
 
     public int findUser(String currentUser) { // -> find user id for vote method
         try {
-            String query = "SELECT id FROM users WHERE username = '" + currentUser + "'";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
+            ResultSet resultSet = userRepository.getIdForUserByUsername(currentUser);
+            if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (Exception e) {

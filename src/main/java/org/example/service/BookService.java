@@ -12,6 +12,4 @@ public interface BookService {
     public void mostRatedBooks();
 
     public void vote(int userId);
-
-    public void countVote(int userId, String title);
 }
