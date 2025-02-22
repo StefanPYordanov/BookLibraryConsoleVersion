@@ -24,7 +24,6 @@ public class ConnectionFactory {
             connection = DriverManager.getConnection(url,
                     user, password);
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Connection to database FAIL !");
         }catch(IOException e){
             System.out.println("Property file missing !");
         }

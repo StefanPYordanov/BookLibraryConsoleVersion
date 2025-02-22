@@ -1,140 +1,52 @@
 package org.example;
 
-import org.example.helper.Menu;
-import org.example.service.BookServiceImpl;
-import org.example.service.UserServiceImpl;
+import org.example.commands.LoginCommand;
+import org.example.commands.MenuManager;
+import org.example.commands.RateBookCommand;
+import org.example.commands.RegisterCommand;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
+        MenuManager menuManager = new MenuManager();
         Scanner scanner = new Scanner(System.in);
-        BookServiceImpl bookServiceImpl = new BookServiceImpl();
-        UserServiceImpl userServiceImpl = new UserServiceImpl();
-        Menu menu = new Menu();
+        LoginCommand loginCommand = new LoginCommand();
+        RegisterCommand registerCommand = new RegisterCommand();
+        RateBookCommand rateBookCommand = new RateBookCommand();
 
-        menu.nonUserMenu();
-        String choice = scanner.nextLine();
-        while (!choice.equals("9")) {
-            String currentUser = "";
+        String currentUser = "";
+        String role = "";
 
-            switch (choice) {
-                case "1" -> {
-                    System.out.println("Please Enter your username:");
-                    String username = scanner.nextLine();
-                    System.out.println("Please Enter your password");
-                    String password = scanner.nextLine();
-                    while (!userServiceImpl.login(username, password)) {
-                        System.out.println("Please Enter your username:");
-                        username = scanner.nextLine();
-                        System.out.println("Please Enter your password");
-                        password = scanner.nextLine();
-                    }
-                    currentUser = username;
-                    if (userServiceImpl.isAdmin(username)) {
-                        menu.adminMenu();
-                        choice = scanner.nextLine();
-                        while (!currentUser.equals("")) {
-                            switch (choice) {
-                                case "1" -> bookServiceImpl.addBook();
-                                case "2" -> bookServiceImpl.displayBooks();
-                                case "3" -> {
-                                    int userId = userServiceImpl.findUser(currentUser);
-                                    bookServiceImpl.vote(userId);
-                                }
-                                case "4" -> bookServiceImpl.mostRatedBooks();
-                                case "5" -> {
-                                    currentUser = "";
-                                    menu.nonUserMenu();
-                                }
-                                case "6" -> {
-                                    bookServiceImpl.deleteBook();
-                                }
-                                case "7" -> {
-                                    userServiceImpl.displayUsers();
-                                    System.out.println("Please enter the id of the user you want to delete:");
-                                    int idToDeleteUser = scanner.nextInt();
-                                    userServiceImpl.deleteUser(idToDeleteUser);
-                                    choice = scanner.nextLine();
-                                }
-                                case "8" -> {
-                                    userServiceImpl.displayUsers();
-                                    System.out.println("Please enter the id of the user you want to become admin:");
-                                    int idToBecomeAdmin = scanner.nextInt();
-                                    userServiceImpl.giveRole(idToBecomeAdmin);
-                                    choice = scanner.nextLine();
-                                }
-                                case "9" -> System.exit(0);
-                                default -> System.out.println("Invalid command, please select from existing one");
-                            }
-                            if (!currentUser.equals("")) {
-                                menu.adminMenu();
-                                choice = scanner.nextLine();
-                            }
-                        }
-                    } else {
-                        menu.userMenu();
-                        choice = scanner.nextLine();
-                        while (!currentUser.equals("")) {
-                            switch (choice) {
-                                case "1" -> bookServiceImpl.addBook();
-                                case "2" -> bookServiceImpl.displayBooks();
-                                case "3" -> {
-                                    int userId = userServiceImpl.findUser(currentUser);
-                                    bookServiceImpl.vote(userId);
-                                }
-                                case "4" -> bookServiceImpl.mostRatedBooks();
-                                case "5" -> {
-                                    currentUser = "";
-                                    menu.nonUserMenu();
-                                }
-                                case "9" -> System.exit(0);
-                                default -> System.out.println("Invalid command, please select from existing one");
-                            }
-                            if (!currentUser.equals("")) {
-                                menu.userMenu();
-                                choice = scanner.nextLine();
-                            }
-                        }
-                    }
-                }
-                case "2" -> {
-                    String[] tokens = userServiceImpl.register().split(" ");
-                    userServiceImpl.login(tokens[0], tokens[1]);
-                    currentUser = tokens[0] + " " + tokens[1];
-                    menu.userMenu();
-                    choice = scanner.nextLine();
-                    while (!currentUser.equals("")) {
-                        switch (choice) {
-                            case "1" -> bookServiceImpl.addBook();
-                            case "2" -> bookServiceImpl.displayBooks();
-                            case "3" -> {
-                                int userId = userServiceImpl.findUser(currentUser);
-                                bookServiceImpl.vote(userId);
-                            }
-                            case "4" -> bookServiceImpl.mostRatedBooks();
-                            case "5" -> {
-                                currentUser = "";
-                                menu.nonUserMenu();
-                            }
-                            case "9" -> System.exit(0);
-                            default -> System.out.println("Invalid command, please select from existing one");
-                        }
-                        if (!currentUser.equals("")) {
-                            menu.userMenu();
-                            choice = scanner.nextLine();
-                        }
-                    }
-                }
-                case "3" -> {
-                    bookServiceImpl.displayBooks();
-                    menu.nonUserMenu();
-                }
-                case "9" -> System.exit(0);
-                default -> System.out.println("Invalid command, please select from existing one");
+        while (true) {
+            menuManager.showMenu(role);
+
+            System.out.println("Please choose option from the menu");
+            String choice = scanner.nextLine();
+
+            if (choice.equals("3")) {
+                menuManager.executeCommand(choice);
+                break;
+            } else if (choice.equals("1") && currentUser.equals("")) {
+                loginCommand.execute();
+                currentUser = loginCommand.getCurrentUser();
+                role = loginCommand.getRole();
+            } else if (choice.equals("2") && currentUser.equals("")) {
+                registerCommand.execute();
+                currentUser = registerCommand.getCurrentUser();
+                role = registerCommand.getRole();
+            } else if (choice.equals("6") && !currentUser.equals("")) {
+                rateBookCommand.setCurrentUser(currentUser);
+                rateBookCommand.execute();
+            } else if (choice.equals("8") && !currentUser.equals("")) {
+                currentUser = "";
+                role = "";
+                loginCommand.setCurrentUser(null);
+                loginCommand.setRole(null);
+            } else {
+                menuManager.executeCommand(choice);
             }
-            choice = scanner.nextLine();
         }
     }
 }
