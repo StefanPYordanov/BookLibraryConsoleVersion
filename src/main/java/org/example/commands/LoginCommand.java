@@ -51,5 +51,5 @@ public class LoginCommand implements Command{
         } else {
             System.out.println("Invalid Command");
         }
-    }
+    } //TODO : Move to controller
 }

@@ -22,5 +22,5 @@ public class RateBookCommand implements Command {
     public void execute() {
         int userId = userServiceImpl.findUser(currentUser);
         bookServiceImpl.vote(userId);
-    }
+    } //TODO : give more info ??
 }

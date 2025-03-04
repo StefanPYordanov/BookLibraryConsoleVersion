@@ -29,7 +29,7 @@ public class RegisterCommand implements Command{
     @Override
     public void execute() {
         String[] credentials = userServiceImpl.register().split(" ");
-        userServiceImpl.login(credentials[0], credentials[1]);
+        userServiceImpl.login(credentials[0], credentials[1]); //use credential for login after register
         currentUser = credentials[0];
         if (userServiceImpl.isAdmin(currentUser)){
             role = "admin";

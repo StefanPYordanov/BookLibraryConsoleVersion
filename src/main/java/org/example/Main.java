@@ -23,7 +23,7 @@ public class Main {
 
             System.out.println("Please choose option from the menu");
             String choice = scanner.nextLine();
-
+// TODO : Consider change (if-else) construction with (switch)
             if (choice.equals(EXIT_COMMAND)) {
                 menuManager.executeCommand(choice);
                 break;
@@ -47,5 +47,5 @@ public class Main {
                 menuManager.executeCommand(choice);
             }
         }
-    }
+    } //TODO : Optimize services !!!
 }

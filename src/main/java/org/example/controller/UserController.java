@@ -1,16 +1,17 @@
-package org.example.helper;
+package org.example.controller;
 
+import org.example.helper.validations.GenericValidator;
 import org.example.helper.validations.UserValidator;
 
 import java.util.Scanner;
 
 import static org.example.helper.validations.GenericValidator.isFieldEmpty;
 
-public class UserMenu { //TODO : Move this methods in some proper package
+public class UserController {
     Scanner scanner = new Scanner(System.in);
     UserValidator userValidator = new UserValidator();
 
-    public String registerUserMenuUsername() {
+    public String registrationUsername() {
         // Set user username in Register user form
         System.out.println("Please enter username:");
         String username = scanner.nextLine();
@@ -20,8 +21,7 @@ public class UserMenu { //TODO : Move this methods in some proper package
         }
         return username;
     }
-
-    public String registerUserMenuPassword() {
+    public String registrationPassword() {
         // Set user password in Register user form
         System.out.println("Please enter password:");
         String password = scanner.nextLine();
@@ -35,8 +35,7 @@ public class UserMenu { //TODO : Move this methods in some proper package
         }
         return password;
     }
-
-    public String registerUserMenuEmail() {
+    public String registrationEmail() {
         // Set user email in Register user form
         System.out.println("Please enter email:");
         String email = scanner.nextLine();
@@ -46,8 +45,7 @@ public class UserMenu { //TODO : Move this methods in some proper package
         }
         return email;
     }
-
-    public String registerUserMenuFullName() {
+    public String registrationFullName() {
         // Set user full name in Register user form
         System.out.println("Please enter your full name:");
         String fullName = scanner.nextLine();
@@ -57,9 +55,12 @@ public class UserMenu { //TODO : Move this methods in some proper package
         }
         return fullName;
     }
-
-    public void userDoNotExistMenu() {
-        // Print invalid user message for give user role and delete user
-        System.out.println("User don't exist \nPlease enter existing id:");
+    public int userToDelete(){
+        System.out.println("Please enter the id of the user you want to delete:");
+        return GenericValidator.readNumber();
+    }
+    public int promoteUser(){
+        System.out.println("Please enter the id of the user you want to become admin:");
+        return GenericValidator.readNumber();
     }
 }

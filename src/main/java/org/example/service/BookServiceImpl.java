@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.helper.BookMenu;
+import org.example.controller.BookController;
 import org.example.helper.validations.BookValidator;
 import org.example.model.entity.BookEntity;
 import org.example.repository.BookRepository;
@@ -15,20 +15,19 @@ import static org.example.helper.messages.TextMessages.*;
 
 public class BookServiceImpl implements BookService {
     Scanner scanner = new Scanner(System.in);
-    BookMenu bookMenu = new BookMenu();
     BookValidator bookValidator = new BookValidator();
     BookRepository bookRepository = new BookRepository();
-
+    BookController bookController = new BookController();
     @Override
     public void addBook() { // -> Add book to DB
             BookEntity bookToSave = new BookEntity();
 
-            bookToSave.setIsbn(bookMenu.registerMenuIsbn());
-            bookToSave.setBookName(bookMenu.registerMenuTitle());
-            bookToSave.setAuthorName(bookMenu.registerMenuAuthor());
-            bookToSave.setGenre(bookMenu.registerMenuGenre());
-            bookToSave.setReleaseYear(bookMenu.registerMenuReleaseYear());
-            bookToSave.setPages(bookMenu.registerMenuPages());
+            bookToSave.setIsbn(bookController.registrationIsbn());
+            bookToSave.setBookName(bookController.registrationTitle());
+            bookToSave.setAuthorName(bookController.registrationAuthor());
+            bookToSave.setGenre(bookController.registrationGenre());
+            bookToSave.setReleaseYear(bookController.registrationReleaseYear());
+            bookToSave.setPages(bookController.registrationPages());
             // Rating is set to be 0 in initialization, will be incremented after user vote
             bookToSave.setRating(RATING_BEFORE_SOMEONE_RATE_FOR_BOOK);
 
@@ -67,13 +66,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook() { //-> Function for admins, to delete books
-        String bookToDelete = bookMenu.deleteBookMenu();
+        String bookToDelete = bookController.bookToDelete();
 
         bookRepository.deleteBookByName(bookToDelete);
 
         System.out.println(bookToDelete + " has been removed from library!\n");
     }
-
+    @Override
     public void addRating(String name) { // -> Add rating to book in DB
         if (bookValidator.isBookExist(name)) {
             try {
@@ -120,7 +119,7 @@ public class BookServiceImpl implements BookService {
             System.out.println("A problem has occurred with displaying most rated books!\nPlease try again !");
         }
     }
-
+    @Override
     public void vote(int userId) { // -> Check if user is already voted, add vote is not
         List<String> listOfTitles = new ArrayList<>();
         System.out.println("Please enter title to vote for:");

@@ -1,6 +1,7 @@
 package org.example.service;
 
-import org.example.helper.UserMenu;
+import org.example.controller.UserController;
+import org.example.helper.validations.GenericValidator;
 import org.example.helper.validations.UserValidator;
 import org.example.model.entity.UserEntity;
 import org.example.repository.UserRepository;
@@ -8,15 +9,13 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import static org.example.helper.messages.TextMessages.*;
 
 public class UserServiceImpl implements UserService {
-    Scanner scanner = new Scanner(System.in);
     UserValidator userValidator = new UserValidator();
-    UserMenu userMenu = new UserMenu();
     UserRepository userRepository = new UserRepository();
+    UserController userController = new UserController();
 
     @Override
     public boolean login(String username, String password) { //-> Check if user exist in DB with provided credentials1
@@ -51,22 +50,22 @@ public class UserServiceImpl implements UserService {
             UserEntity userToSave = new UserEntity();
 
             userToSave.setId(nextUserId());
-            userToSave.setUsername(userMenu.registerUserMenuUsername());
-            userToSave.setPassword(userMenu.registerUserMenuPassword());
-            userToSave.setEmail(userMenu.registerUserMenuEmail());
-            userToSave.setFullName(userMenu.registerUserMenuFullName());
+            userToSave.setUsername(userController.registrationUsername());
+            userToSave.setPassword(userController.registrationPassword());
+            userToSave.setEmail(userController.registrationEmail());
+            userToSave.setFullName(userController.registrationFullName());
             userToSave.setRole(INITIAL_USER_ROLE_AFTER_REGISTER);
 
             userRepository.addUser(userToSave);
 
-            return userToSave.getUsername() + " " + userToSave.getPassword();
+            return userToSave.getUsername() + " " + userToSave.getPassword(); // return credential for login after registration
     }
 
     @Override
     public void deleteUser(int id) { // -> function for admins to block users
             while (!userValidator.isUserIdExist(id)) {
-                userMenu.userDoNotExistMenu();
-                id = scanner.nextInt();
+                System.out.println("User don't exist \nPlease enter existing id:");
+                id = GenericValidator.readNumber();
             }
               userRepository.deleteUserById(id);
 
@@ -100,8 +99,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void giveRole(int id) { // -> function for admins to give role to other users
             while (!userValidator.isUserIdExist(id)) {
-                userMenu.userDoNotExistMenu();
-                id = scanner.nextInt();
+                System.out.println("User don't exist \nPlease enter existing id:");
+                id = GenericValidator.readNumber();
             }
             userRepository.getUserById(id);
             userRepository.updateUserRole(id);
@@ -136,7 +135,7 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-
+    @Override
     public int findUser(String currentUser) { // -> find user id for vote method
         try {
             ResultSet resultSet = userRepository.getIdForUserByUsername(currentUser);

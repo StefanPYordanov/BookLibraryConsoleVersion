@@ -1,27 +1,25 @@
-package org.example.helper;
+package org.example.controller;
 
 import org.example.helper.validations.BookValidator;
+import org.example.helper.validations.GenericValidator;
 
 import java.util.Scanner;
 
 import static org.example.helper.validations.GenericValidator.isFieldEmpty;
 
-public class BookMenu { //TODO : Move this methods in some proper package
+public class BookController {
     Scanner scanner = new Scanner(System.in);
     BookValidator bookValidator = new BookValidator();
-
-    public int registerMenuIsbn() {
+    public int registrationIsbn() {
         // Set book isbn in AddBook form
         System.out.println("Please enter isbn:");
-        int isbn = scanner.nextInt();
+        int isbn = GenericValidator.readNumber();
         while (!bookValidator.isNumberPositive(isbn)) {
-            isbn = scanner.nextInt();
+            isbn = GenericValidator.readNumber();
         }
-        scanner.nextLine(); //Clear scanner buffer
         return isbn;
     }
-
-    public String registerMenuTitle() {
+    public String registrationTitle() {
         // Set book title in AddBook form
         System.out.println("Please enter title:");
         String bookName = scanner.nextLine();
@@ -31,8 +29,7 @@ public class BookMenu { //TODO : Move this methods in some proper package
         }
         return bookName;
     }
-
-    public String registerMenuAuthor() {
+    public String registrationAuthor() {
         // Set book author in AddBook form
         System.out.println("Please enter author:");
         String author = scanner.nextLine();
@@ -41,8 +38,7 @@ public class BookMenu { //TODO : Move this methods in some proper package
         }
         return author;
     }
-
-    public String registerMenuGenre() {
+    public String registrationGenre() {
         // Set book genre in AddBook form
         System.out.println("Please enter genre:");
         String genre = scanner.nextLine();
@@ -51,30 +47,25 @@ public class BookMenu { //TODO : Move this methods in some proper package
         }
         return genre;
     }
-
-    public int registerMenuReleaseYear() {
+    public int registrationReleaseYear() {
         // Set book release year in AddBook form
         System.out.println("Please enter the release year of the book");
-        int releaseYear = scanner.nextInt();
+        int releaseYear = GenericValidator.readNumber();
         while (!bookValidator.isYearValid(releaseYear)) {
-            releaseYear = scanner.nextInt();
+            releaseYear = GenericValidator.readNumber();
         }
-        scanner.nextLine(); //Clear scanner buffer
         return releaseYear;
     }
-
-    public int registerMenuPages() {
+    public int registrationPages() {
         // Set book pages in AddBook form
         System.out.println("Please enter book pages:");
-        int pages = scanner.nextInt();
+        int pages = GenericValidator.readNumber();
         while (!bookValidator.isNumberPositive(pages)) {
-            pages = scanner.nextInt();
+            pages = GenericValidator.readNumber();
         }
-        scanner.nextLine(); //Clear scanner buffer
         return pages;
     }
-
-    public String deleteBookMenu() {
+    public String bookToDelete() {
         // Return the book title we want to delete
         System.out.println("Please enter book name to delete book");
         String bookToDelete = scanner.nextLine();

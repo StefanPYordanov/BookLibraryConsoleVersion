@@ -1,19 +1,18 @@
 package org.example.commands;
 
+import org.example.controller.UserController;
+import org.example.helper.validations.GenericValidator;
 import org.example.service.UserServiceImpl;
 
 import java.util.Scanner;
 
 public class GiveRoleCommand implements Command {
-    Scanner scanner = new Scanner(System.in);
+    UserController userController = new UserController();
     UserServiceImpl userServiceImpl = new UserServiceImpl();
     @Override
     public void execute() {
         userServiceImpl.displayUsers();
-        System.out.println("Please enter the id of the user you want to become admin:");
-        int idToBecomeAdmin = scanner.nextInt();
-        scanner.nextLine(); //Clean scanner buffer
-        userServiceImpl.giveRole(idToBecomeAdmin);
+        userServiceImpl.giveRole(userController.promoteUser());
 
     }
 }

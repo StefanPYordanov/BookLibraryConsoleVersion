@@ -2,7 +2,7 @@ package org.example.helper.messages;
 
 import java.time.LocalDate;
 
-public final class TextMessages {
+public final class TextMessages { // TODO : Move different messages to other packages
 
     public static final String LOGIN_COMMAND = "1";
     public static final String REGISTER_COMMAND = "2";

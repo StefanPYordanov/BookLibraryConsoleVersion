@@ -1,19 +1,14 @@
 package org.example.commands;
 
+import org.example.controller.UserController;
 import org.example.service.UserServiceImpl;
 
-import java.util.Scanner;
-
 public class DeleteUserCommand implements Command {
-    Scanner scanner = new Scanner(System.in);
+    UserController userController = new UserController();
     UserServiceImpl userServiceImpl = new UserServiceImpl();
     @Override
     public void execute() {
         userServiceImpl.displayUsers();
-        System.out.println("Please enter the id of the user you want to delete:");
-        int idToDeleteUser = scanner.nextInt();
-        scanner.nextLine(); //Clean scanner buffer
-        userServiceImpl.deleteUser(idToDeleteUser);
-
+        userServiceImpl.deleteUser(userController.userToDelete());
     }
 }
