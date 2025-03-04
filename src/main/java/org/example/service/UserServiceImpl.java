@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.helper.UserMenu;
-import org.example.helper.Validator;
+import org.example.helper.validations.UserValidator;
 import org.example.model.entity.UserEntity;
 import org.example.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -10,14 +10,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static org.example.helper.messages.TextMessages.*;
+
 public class UserServiceImpl implements UserService {
     Scanner scanner = new Scanner(System.in);
-    Validator validator = new Validator();
+    UserValidator userValidator = new UserValidator();
     UserMenu userMenu = new UserMenu();
     UserRepository userRepository = new UserRepository();
 
     @Override
-    public boolean login(String username, String password) {
+    public boolean login(String username, String password) { //-> Check if user exist in DB with provided credentials1
         try {
             ResultSet resultSet = userRepository.getUserByUsername(username);
 
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Can't Login !!!");
+            System.out.println("A problem has occurred with login!\nPlease try again !");
             return false;
 
         } catch (IllegalArgumentException e) {
@@ -45,41 +47,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String register() {
-        try {
-            UserEntity userEntity = new UserEntity();
+    public String register() { //-> Add user to DB
+            UserEntity userToSave = new UserEntity();
 
-            userEntity.setId(nextUserId());
-            userEntity.setUsername(userMenu.registerUserMenuUsername());
-            userEntity.setPassword(userMenu.registerUserMenuPassword());
-            userEntity.setEmail(userMenu.registerUserMenuEmail());
-            userEntity.setFullName(userMenu.registerUserMenuFullName());
-            userEntity.setRole("User");
+            userToSave.setId(nextUserId());
+            userToSave.setUsername(userMenu.registerUserMenuUsername());
+            userToSave.setPassword(userMenu.registerUserMenuPassword());
+            userToSave.setEmail(userMenu.registerUserMenuEmail());
+            userToSave.setFullName(userMenu.registerUserMenuFullName());
+            userToSave.setRole(INITIAL_USER_ROLE_AFTER_REGISTER);
 
-            userRepository.addUser(userEntity);
+            userRepository.addUser(userToSave);
 
-            return userEntity.getUsername() + " " + userEntity.getPassword();
-
-        } catch (SQLException e) {
-            System.out.println("Can't Register!!!");
-            return null;
-        }
-
+            return userToSave.getUsername() + " " + userToSave.getPassword();
     }
 
     @Override
     public void deleteUser(int id) { // -> function for admins to block users
-        try {
-            while (!validator.isUserIdExist(id)) {
+            while (!userValidator.isUserIdExist(id)) {
                 userMenu.userDoNotExistMenu();
                 id = scanner.nextInt();
             }
               userRepository.deleteUserById(id);
 
             System.out.println("User has been blocked!\n");
-        } catch (SQLException e) {
-            System.out.println("Can't delete user!!!");
-        }
     }
 
     @Override
@@ -102,14 +93,13 @@ public class UserServiceImpl implements UserService {
                 System.out.println(builder);
             }
         } catch (SQLException e) {
-            System.out.println("Can't Display users!!!");
+            System.out.println("A problem has occurred with displaying users!\nPlease try again !");
         }
     }
 
     @Override
     public void giveRole(int id) { // -> function for admins to give role to other users
-        try {
-            while (!validator.isUserIdExist(id)) {
+            while (!userValidator.isUserIdExist(id)) {
                 userMenu.userDoNotExistMenu();
                 id = scanner.nextInt();
             }
@@ -117,9 +107,6 @@ public class UserServiceImpl implements UserService {
             userRepository.updateUserRole(id);
 
             System.out.println("Successfully promoted user!\n");
-        } catch (SQLException e) {
-            System.out.println("Can't give role !!!");
-        }
     }
 
     @Override
@@ -127,10 +114,10 @@ public class UserServiceImpl implements UserService {
         try {
             ResultSet resultSet = userRepository.getBiggestUserId();
             if (resultSet.next()) {
-                return resultSet.getInt(1) + 1;
+                return resultSet.getInt(1) + INCREMENT_LAST_USER_ID_BY_ONE;
             }
         } catch (Exception e) {
-            System.out.println("No next id !!!");
+            System.out.println("A problem has occurred with finding next user id in database!");
             return 0;
         }
         return 0;
@@ -144,7 +131,7 @@ public class UserServiceImpl implements UserService {
                 return resultSet.getString(6).equals("Admin");
             }
         } catch (SQLException e) {
-            System.out.println("No such admin !!!");
+            System.out.println("There isn't admin with this username!");
             return false;
         }
         return false;
@@ -157,7 +144,7 @@ public class UserServiceImpl implements UserService {
                 return resultSet.getInt(1);
             }
         } catch (Exception e) {
-            System.out.println("No Such User!!!");
+            System.out.println("There isn't user with this username!");
             return 0;
         }
         return 0;

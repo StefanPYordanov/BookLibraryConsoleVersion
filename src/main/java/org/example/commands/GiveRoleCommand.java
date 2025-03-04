@@ -12,7 +12,8 @@ public class GiveRoleCommand implements Command {
         userServiceImpl.displayUsers();
         System.out.println("Please enter the id of the user you want to become admin:");
         int idToBecomeAdmin = scanner.nextInt();
+        scanner.nextLine(); //Clean scanner buffer
         userServiceImpl.giveRole(idToBecomeAdmin);
-        scanner.nextInt();
+
     }
 }

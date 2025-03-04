@@ -5,8 +5,8 @@ import org.example.service.UserServiceImpl;
 public class RegisterCommand implements Command{
     UserServiceImpl userServiceImpl = new UserServiceImpl();
 
-    String currentUser;
-    String role;
+    private String currentUser;
+    private String role;
 
     public String getCurrentUser() {
         return currentUser;
@@ -28,9 +28,9 @@ public class RegisterCommand implements Command{
 
     @Override
     public void execute() {
-        String[] tokens = userServiceImpl.register().split(" ");
-        userServiceImpl.login(tokens[0], tokens[1]);
-        currentUser = tokens[0];
+        String[] credentials = userServiceImpl.register().split(" ");
+        userServiceImpl.login(credentials[0], credentials[1]);
+        currentUser = credentials[0];
         if (userServiceImpl.isAdmin(currentUser)){
             role = "admin";
         }else{

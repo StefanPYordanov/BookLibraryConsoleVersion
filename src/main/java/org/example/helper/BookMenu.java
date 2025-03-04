@@ -1,26 +1,31 @@
 package org.example.helper;
 
+import org.example.helper.validations.BookValidator;
+
 import java.util.Scanner;
 
-public class BookMenu {
+import static org.example.helper.validations.GenericValidator.isFieldEmpty;
+
+public class BookMenu { //TODO : Move this methods in some proper package
     Scanner scanner = new Scanner(System.in);
-    Validator validator = new Validator();
+    BookValidator bookValidator = new BookValidator();
 
     public int registerMenuIsbn() {
-        // Enter whole data for the book
+        // Set book isbn in AddBook form
         System.out.println("Please enter isbn:");
         int isbn = scanner.nextInt();
-        while (!validator.isNumberValid(isbn)) {
+        while (!bookValidator.isNumberPositive(isbn)) {
             isbn = scanner.nextInt();
         }
+        scanner.nextLine(); //Clear scanner buffer
         return isbn;
     }
 
     public String registerMenuTitle() {
+        // Set book title in AddBook form
         System.out.println("Please enter title:");
-        scanner.nextLine(); // Clearing buffer
         String bookName = scanner.nextLine();
-        while (validator.isBookExist(bookName) || validator.isFieldEmpty(bookName)) {
+        while (bookValidator.isBookExist(bookName) || isFieldEmpty(bookName)) {
             System.out.println("Book already exist, please try with other book!");
             bookName = scanner.nextLine();
         }
@@ -28,45 +33,52 @@ public class BookMenu {
     }
 
     public String registerMenuAuthor() {
+        // Set book author in AddBook form
         System.out.println("Please enter author:");
         String author = scanner.nextLine();
-        while (validator.isFieldEmpty(author)) {
+        while (isFieldEmpty(author)) {
             author = scanner.nextLine();
         }
         return author;
     }
 
     public String registerMenuGenre() {
+        // Set book genre in AddBook form
         System.out.println("Please enter genre:");
         String genre = scanner.nextLine();
-        while (validator.isFieldEmpty(genre)) {
+        while (isFieldEmpty(genre)) {
             genre = scanner.nextLine();
         }
         return genre;
     }
 
     public int registerMenuReleaseYear() {
+        // Set book release year in AddBook form
         System.out.println("Please enter the release year of the book");
         int releaseYear = scanner.nextInt();
-        while (!validator.isYear(releaseYear)) {
+        while (!bookValidator.isYearValid(releaseYear)) {
             releaseYear = scanner.nextInt();
         }
+        scanner.nextLine(); //Clear scanner buffer
         return releaseYear;
     }
 
     public int registerMenuPages() {
+        // Set book pages in AddBook form
         System.out.println("Please enter book pages:");
         int pages = scanner.nextInt();
-        while (!validator.isNumberValid(pages)) {
+        while (!bookValidator.isNumberPositive(pages)) {
             pages = scanner.nextInt();
         }
+        scanner.nextLine(); //Clear scanner buffer
         return pages;
     }
 
     public String deleteBookMenu() {
+        // Return the book title we want to delete
         System.out.println("Please enter book name to delete book");
         String bookToDelete = scanner.nextLine();
-        while (!validator.isBookExist(bookToDelete)) {
+        while (!bookValidator.isBookExist(bookToDelete)) {
             System.out.println("Please chose from existing library");
             bookToDelete = scanner.nextLine();
         }

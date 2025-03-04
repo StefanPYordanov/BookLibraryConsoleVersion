@@ -7,7 +7,7 @@ public class RateBookCommand implements Command {
     BookServiceImpl bookServiceImpl = new BookServiceImpl();
     UserServiceImpl userServiceImpl = new UserServiceImpl();
 
-    String currentUser;
+    private String currentUser;
 
     public String getCurrentUser() {
         return currentUser;

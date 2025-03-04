@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.helper.BookMenu;
-import org.example.helper.Validator;
+import org.example.helper.validations.BookValidator;
 import org.example.model.entity.BookEntity;
 import org.example.repository.BookRepository;
 
@@ -11,32 +11,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.example.helper.messages.TextMessages.*;
+
 public class BookServiceImpl implements BookService {
     Scanner scanner = new Scanner(System.in);
     BookMenu bookMenu = new BookMenu();
-    Validator validator = new Validator();
+    BookValidator bookValidator = new BookValidator();
     BookRepository bookRepository = new BookRepository();
 
     @Override
     public void addBook() { // -> Add book to DB
-        BookEntity bookEntity = new BookEntity();
-        try {
-            bookEntity.setIsbn(bookMenu.registerMenuIsbn());
-            bookEntity.setBookName(bookMenu.registerMenuTitle());
-            bookEntity.setAuthorName(bookMenu.registerMenuAuthor());
-            bookEntity.setGenre(bookMenu.registerMenuGenre());
-            bookEntity.setReleaseYear(bookMenu.registerMenuReleaseYear());
-            bookEntity.setPages(bookMenu.registerMenuPages());
+            BookEntity bookToSave = new BookEntity();
+
+            bookToSave.setIsbn(bookMenu.registerMenuIsbn());
+            bookToSave.setBookName(bookMenu.registerMenuTitle());
+            bookToSave.setAuthorName(bookMenu.registerMenuAuthor());
+            bookToSave.setGenre(bookMenu.registerMenuGenre());
+            bookToSave.setReleaseYear(bookMenu.registerMenuReleaseYear());
+            bookToSave.setPages(bookMenu.registerMenuPages());
             // Rating is set to be 0 in initialization, will be incremented after user vote
-            bookEntity.setRating(0);
+            bookToSave.setRating(RATING_BEFORE_SOMEONE_RATE_FOR_BOOK);
 
-            bookRepository.addBook(bookEntity);
+            bookRepository.addBook(bookToSave);
 
-            System.out.println(bookEntity.getBookName() + " has been added to library!\n");
-
-        } catch (SQLException e) {
-            System.out.println("Can't add book!!!");
-        }
+            System.out.println(bookToSave.getBookName() + " has been added to library!\n");
     }
 
     @Override
@@ -63,24 +61,21 @@ public class BookServiceImpl implements BookService {
                 System.out.println(builder);
             }
         } catch (SQLException e) {
-            System.out.println("Can't Display books!!!");
+            System.out.println("A problem has occurred with displaying all books!\nPlease try again !");
         }
     }
 
     @Override
     public void deleteBook() { //-> Function for admins, to delete books
         String bookToDelete = bookMenu.deleteBookMenu();
-        try {
-            bookRepository.deleteBookByName(bookToDelete);
 
-            System.out.println(bookToDelete + " has been removed from library!\n");
-        } catch (SQLException e) {
-            System.out.println("Can't Delete book!!!");
-        }
+        bookRepository.deleteBookByName(bookToDelete);
+
+        System.out.println(bookToDelete + " has been removed from library!\n");
     }
 
     public void addRating(String name) { // -> Add rating to book in DB
-        if (validator.isBookExist(name)) {
+        if (bookValidator.isBookExist(name)) {
             try {
                ResultSet resultSet = bookRepository.getBookByName(name);
 
@@ -91,7 +86,7 @@ public class BookServiceImpl implements BookService {
                     System.out.println("Thank you for your vote !\n");
                 }
             } catch (SQLException e) {
-                System.out.println("Can't add rating!!!");
+                System.out.println("A problem has occurred with adding rating to book!\nPlease try again !");
             }
         } else {
             System.out.println("Book don't exist!");
@@ -122,14 +117,14 @@ public class BookServiceImpl implements BookService {
                 System.out.println(builder);
             }
         } catch (SQLException e) {
-            System.out.println("Can't show most rated book!!!");
+            System.out.println("A problem has occurred with displaying most rated books!\nPlease try again !");
         }
     }
 
     public void vote(int userId) { // -> Check if user is already voted, add vote is not
         List<String> listOfTitles = new ArrayList<>();
         System.out.println("Please enter title to vote for:");
-        String title = scanner.nextLine().toLowerCase();
+        String title = scanner.nextLine().toLowerCase(); //Fetch all books from db, to ignore case sensitivity
         try {
               ResultSet resultSet = bookRepository.getBookNameByUserId(userId);
 
@@ -144,7 +139,7 @@ public class BookServiceImpl implements BookService {
                 System.out.println("You already voted for this book!");
             }
         } catch (SQLException e) {
-            System.out.println("Can't Vote!!!");
+            System.out.println("A problem has occurred with adding a vote to database!\nPlease try again !");
         }
     }
 }

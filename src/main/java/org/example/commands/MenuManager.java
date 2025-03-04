@@ -3,6 +3,8 @@ package org.example.commands;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.example.helper.messages.TextMessages.*;
+
 public class MenuManager {
     private Map<String, Command> commands = new HashMap<>();
     public void showAdminMenu(){
@@ -19,13 +21,13 @@ public class MenuManager {
         System.out.println("*************************************************");
 
         commands.clear();
-        commands.put("3", new ExitCommand());
-        commands.put("4", new ShowLibraryCommand());
-        commands.put("5", new AddBookCommand());
-        commands.put("7", new ShowBiggestRatedBooksCommand());
-        commands.put("9", new DeleteBookCommand());
-        commands.put("10", new DeleteUserCommand());
-        commands.put("11", new GiveRoleCommand());
+        commands.put(EXIT_COMMAND, new ExitCommand());
+        commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
+        commands.put(ADD_BOOK_COMMAND, new AddBookCommand());
+        commands.put(DISPLAY_BIGGEST_RATED_BOOKS_COMMAND, new ShowBiggestRatedBooksCommand());
+        commands.put(DELETE_BOOK_COMMAND, new DeleteBookCommand());
+        commands.put(DELETE_USER_COMMAND, new DeleteUserCommand());
+        commands.put(GIVE_ADMIN_ROLE_TO_USER_COMMAND, new GiveRoleCommand());
     }
     public void showUserMenu(){
         System.out.println("*************************************************");
@@ -38,10 +40,10 @@ public class MenuManager {
         System.out.println("*************************************************");
 
         commands.clear();
-        commands.put("3", new ExitCommand());
-        commands.put("4", new ShowLibraryCommand());
-        commands.put("5", new AddBookCommand());
-        commands.put("7", new ShowBiggestRatedBooksCommand());
+        commands.put(EXIT_COMMAND, new ExitCommand());
+        commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
+        commands.put(ADD_BOOK_COMMAND, new AddBookCommand());
+        commands.put(DISPLAY_BIGGEST_RATED_BOOKS_COMMAND, new ShowBiggestRatedBooksCommand());
     }
     public void showGuestMenu(){
         System.out.println("*************************************************");
@@ -52,8 +54,8 @@ public class MenuManager {
         System.out.println("*************************************************");
 
         commands.clear();
-        commands.put("3", new ExitCommand());
-        commands.put("4", new ShowLibraryCommand());
+        commands.put(EXIT_COMMAND, new ExitCommand());
+        commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
     }
 
     public void executeCommand(String choice){

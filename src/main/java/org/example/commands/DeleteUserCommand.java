@@ -12,7 +12,8 @@ public class DeleteUserCommand implements Command {
         userServiceImpl.displayUsers();
         System.out.println("Please enter the id of the user you want to delete:");
         int idToDeleteUser = scanner.nextInt();
+        scanner.nextLine(); //Clean scanner buffer
         userServiceImpl.deleteUser(idToDeleteUser);
-        scanner.nextLine();
+
     }
 }

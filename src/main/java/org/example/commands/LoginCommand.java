@@ -7,8 +7,8 @@ import java.util.Scanner;
 public class LoginCommand implements Command{
     Scanner scanner = new Scanner(System.in);
     UserServiceImpl userServiceImpl = new UserServiceImpl();
-    String currentUser;
-    String role;
+    private String currentUser;
+    private String role;
 
     public String getCurrentUser() {
         return currentUser;

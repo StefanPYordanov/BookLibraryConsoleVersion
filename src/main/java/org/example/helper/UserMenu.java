@@ -1,15 +1,20 @@
 package org.example.helper;
 
+import org.example.helper.validations.UserValidator;
+
 import java.util.Scanner;
 
-public class UserMenu {
+import static org.example.helper.validations.GenericValidator.isFieldEmpty;
+
+public class UserMenu { //TODO : Move this methods in some proper package
     Scanner scanner = new Scanner(System.in);
-    Validator validator = new Validator();
+    UserValidator userValidator = new UserValidator();
 
     public String registerUserMenuUsername() {
+        // Set user username in Register user form
         System.out.println("Please enter username:");
         String username = scanner.nextLine();
-        while (validator.isFieldEmpty(username) || validator.isUsernameExist(username)) {
+        while (isFieldEmpty(username) || userValidator.isUsernameExist(username)) {
             System.out.println("Please enter username:");
             username = scanner.nextLine();
         }
@@ -17,11 +22,12 @@ public class UserMenu {
     }
 
     public String registerUserMenuPassword() {
+        // Set user password in Register user form
         System.out.println("Please enter password:");
         String password = scanner.nextLine();
         System.out.println("Repeat password:");
         String rePass = scanner.nextLine();
-        while (!validator.isPasswordsMatch(password, rePass) || validator.isFieldEmpty(password) || validator.isFieldEmpty(rePass)) {
+        while (!userValidator.isPasswordsMatch(password, rePass) || isFieldEmpty(password) || isFieldEmpty(rePass)) {
             System.out.println("Please enter password:");
             password = scanner.nextLine();
             System.out.println("Please repeat password:");
@@ -31,9 +37,10 @@ public class UserMenu {
     }
 
     public String registerUserMenuEmail() {
+        // Set user email in Register user form
         System.out.println("Please enter email:");
         String email = scanner.nextLine();
-        while (!validator.isEmailValid(email) || validator.isEmailExist(email) || validator.isFieldEmpty(email)) {
+        while (!userValidator.isEmailValid(email) || userValidator.isEmailExist(email) || isFieldEmpty(email)) {
             System.out.println("Please enter email:");
             email = scanner.nextLine();
         }
@@ -41,9 +48,10 @@ public class UserMenu {
     }
 
     public String registerUserMenuFullName() {
+        // Set user full name in Register user form
         System.out.println("Please enter your full name:");
         String fullName = scanner.nextLine();
-        while (validator.isFieldEmpty(fullName)) {
+        while (isFieldEmpty(fullName)) {
             System.out.println("Please enter your full name:");
             fullName = scanner.nextLine();
         }
@@ -51,6 +59,7 @@ public class UserMenu {
     }
 
     public void userDoNotExistMenu() {
+        // Print invalid user message for give user role and delete user
         System.out.println("User don't exist \nPlease enter existing id:");
     }
 }

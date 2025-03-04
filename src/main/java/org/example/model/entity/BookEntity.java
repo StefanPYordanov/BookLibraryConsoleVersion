@@ -2,7 +2,7 @@ package org.example.model.entity;
 
 public class BookEntity {
 
-    private int isbn;
+    private int isbn; // International Standard Book Number
     private String bookName;
     private String authorName;
     private String genre;
