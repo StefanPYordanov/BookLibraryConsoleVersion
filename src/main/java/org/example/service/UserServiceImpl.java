@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
             userToSave.setFullName(userController.registrationFullName());
             userToSave.setRole(INITIAL_USER_ROLE_AFTER_REGISTER);
 
-            userRepository.addUser(userToSave);
+            userRepository.saveUser(userToSave);
 
             return userToSave.getUsername() + " " + userToSave.getPassword(); // return credential for login after registration
     }
@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
                 System.out.println("User don't exist \nPlease enter existing id:");
                 id = GenericValidator.readNumber();
             }
+              userRepository.deleteRatingsByUserId(id);
               userRepository.deleteUserById(id);
 
             System.out.println("User has been blocked!\n");
@@ -123,7 +124,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isAdmin(String username) { // -> check if user is admin
+    public boolean isAdmin(String username) { // -> check if user is admin //TODO : consider return String loggedUserRole DTO
         try {
             ResultSet resultSet = userRepository.getUserByUsername(username);
             if (resultSet.next()) {
@@ -138,7 +139,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int findUser(String currentUser) { // -> find user id for vote method
         try {
-            ResultSet resultSet = userRepository.getIdForUserByUsername(currentUser);
+            ResultSet resultSet = userRepository.getUserIdByUsername(currentUser);
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }

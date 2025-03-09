@@ -36,7 +36,7 @@ public class UserValidator {
 
     public boolean isUsernameExist(String username) { // -> return true if user already exist in DB
         try {
-            ResultSet resultSet = userRepository.getUsernameByUser(username);
+            ResultSet resultSet = userRepository.getUsername(username);
 
             if (resultSet.next()) {
                 System.out.println("Username already exist!");

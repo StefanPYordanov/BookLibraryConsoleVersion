@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class BookRepository {
     Connection connection = ConnectionFactory.getConnection();
-    public void addBook (BookEntity bookEntity) { //-> Add book to DB
+    public void saveBook (BookEntity bookEntity) { //-> Add book to DB
         try {
             String query = "INSERT INTO books (isbn, book_name, author_name, genre, release_year, pages, rating) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -57,7 +57,7 @@ public class BookRepository {
             return null;
         }
     }
-    public void updateBookRatingByName (int rating, String name)  { //-> Update rating for book
+    public void updateBookRatingByBookName(int rating, String name)  { //-> Update rating for book
         try {
             String query = "UPDATE books SET `rating` = '" + rating + "' WHERE book_name ='" + name + "'";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -66,7 +66,7 @@ public class BookRepository {
             System.out.println("A problem has occurred with update rating in database!");
         }
     }
-    public ResultSet getBooksByRating ()  { //-> Show most rated books
+    public ResultSet getAllBooksInOrderByRating()  { //-> Show most rated books
         try {
             String query = "SELECT * FROM books ORDER BY rating DESC";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -87,7 +87,7 @@ public class BookRepository {
             return null;
         }
     }
-    public void addRating (int userId, String title){ //-> Add book rating and which user rate for the book
+    public void saveRatingToCorrespondingUser (int userId, String title){ //-> Add book rating and which user rate for the book
         try {
             String query = "INSERT INTO ratings (user_id, title) VALUES (?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);

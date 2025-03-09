@@ -68,9 +68,9 @@ public class MenuManager {
     }
 
     public void showMenu (String role){
-        if (role.equals("admin")){
+        if (role.equals("Admin")){
             showAdminMenu();
-        } else if (role.equals("user")) {
+        } else if (role.equals("User")) {
             showUserMenu();
         }else{
             showGuestMenu();

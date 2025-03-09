@@ -3,24 +3,15 @@ package org.example.commands;
 import org.example.service.BookServiceImpl;
 import org.example.service.UserServiceImpl;
 
+import static org.example.model.LoggedUserDto.*;
+
 public class RateBookCommand implements Command {
     BookServiceImpl bookServiceImpl = new BookServiceImpl();
     UserServiceImpl userServiceImpl = new UserServiceImpl();
 
-    private String currentUser;
-
-    public String getCurrentUser() {
-        return currentUser;
-    }
-
-    public RateBookCommand setCurrentUser(String currentUser) {
-        this.currentUser = currentUser;
-        return this;
-    }
-
     @Override
     public void execute() {
-        int userId = userServiceImpl.findUser(currentUser);
-        bookServiceImpl.vote(userId);
+        int userId = userServiceImpl.findUser(loggedUserUsername);
+        bookServiceImpl.addBookRating(userId);
     } //TODO : give more info ??
 }

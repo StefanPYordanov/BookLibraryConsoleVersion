@@ -5,6 +5,7 @@ import org.example.commands.*;
 import java.util.Scanner;
 
 import static org.example.helper.messages.TextMessages.*;
+import static org.example.model.LoggedUserDto.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,11 +16,8 @@ public class Main {
         RegisterCommand registerCommand = new RegisterCommand();
         RateBookCommand rateBookCommand = new RateBookCommand();
 
-        String currentUser = "";
-        String role = "";
-
         while (true) {
-            menuManager.showMenu(role);
+            menuManager.showMenu(loggedUserRole);
 
             System.out.println("Please choose option from the menu");
             String choice = scanner.nextLine();
@@ -27,22 +25,15 @@ public class Main {
             if (choice.equals(EXIT_COMMAND)) {
                 menuManager.executeCommand(choice);
                 break;
-            } else if (choice.equals(LOGIN_COMMAND) && currentUser.equals(EMPTY_USER)) {
+            } else if (choice.equals(LOGIN_COMMAND) && loggedUserUsername.equals(EMPTY_USER)) {
                 loginCommand.execute();
-                currentUser = loginCommand.getCurrentUser();
-                role = loginCommand.getRole();
-            } else if (choice.equals(REGISTER_COMMAND) && currentUser.equals(EMPTY_USER)) {
+            } else if (choice.equals(REGISTER_COMMAND) && loggedUserUsername.equals(EMPTY_USER)) {
                 registerCommand.execute();
-                currentUser = registerCommand.getCurrentUser();
-                role = registerCommand.getRole();
-            } else if (choice.equals(RATE_BOOK_COMMAND) && !currentUser.equals(EMPTY_USER)) {
-                rateBookCommand.setCurrentUser(currentUser);
+            } else if (choice.equals(RATE_BOOK_COMMAND) && !loggedUserUsername.equals(EMPTY_USER)) {
                 rateBookCommand.execute();
-            } else if (choice.equals(LOGOUT_COMMAND) && !currentUser.equals(EMPTY_USER)) {
-                currentUser = "";
-                role = "";
-                loginCommand.setCurrentUser(null);
-                loginCommand.setRole(null);
+            } else if (choice.equals(LOGOUT_COMMAND) && !loggedUserUsername.equals(EMPTY_USER)) {
+                loggedUserUsername = "";
+                loggedUserRole = "";
             } else {
                 menuManager.executeCommand(choice);
             }

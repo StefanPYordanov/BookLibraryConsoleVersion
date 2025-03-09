@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class UserRepository {
     Connection connection = ConnectionFactory.getConnection();
-    public ResultSet getUserByUsername(String username)  { //-> Show user from DB
+    public ResultSet getUserByUsername (String username)  { //-> Show user from DB
         try {
             String query = "SELECT * FROM users WHERE username='" + username + "'";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -19,7 +19,7 @@ public class UserRepository {
 
         }
     }
-    public void addUser (UserEntity userEntity) { //-> Add user to DB
+    public void saveUser (UserEntity userEntity) { //-> Add user to DB
         try {
             String query = "INSERT INTO users (id, username, password, email, full_name, role) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -83,7 +83,7 @@ public class UserRepository {
             return null;
         }
     }
-    public ResultSet getIdForUserByUsername(String currentUser) { //-> Show user id
+    public ResultSet getUserIdByUsername (String currentUser) { //-> Show user id
         try {
             String query = "SELECT id FROM users WHERE username = '" + currentUser + "'";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -93,7 +93,7 @@ public class UserRepository {
             return null;
         }
     }
-    public ResultSet getUsernameByUser (String username ) { //-> Show username
+    public ResultSet getUsername (String username ) { //-> Show username
         try {
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
@@ -122,6 +122,15 @@ public class UserRepository {
         } catch(SQLException e){
             System.out.println("A problem has occurred with getting id for user!");
             return null;
+        }
+    }
+    public void deleteRatingsByUserId (int id){
+        try {
+            String query = "DELETE FROM ratings WHERE user_id='" + id + "'";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.executeUpdate();
+        } catch(SQLException e){
+            System.out.println("There is problem with deleting user ratings in database");
         }
     }
 }

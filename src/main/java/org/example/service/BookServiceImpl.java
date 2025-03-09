@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
             // Rating is set to be 0 in initialization, will be incremented after user vote
             bookToSave.setRating(RATING_BEFORE_SOMEONE_RATE_FOR_BOOK);
 
-            bookRepository.addBook(bookToSave);
+            bookRepository.saveBook(bookToSave);
 
             System.out.println(bookToSave.getBookName() + " has been added to library!\n");
     }
@@ -73,7 +73,7 @@ public class BookServiceImpl implements BookService {
         System.out.println(bookToDelete + " has been removed from library!\n");
     }
     @Override
-    public void addRating(String name) { // -> Add rating to book in DB
+    public void incrementBookRating (String name) { // -> Add rating to book in DB
         if (bookValidator.isBookExist(name)) {
             try {
                ResultSet resultSet = bookRepository.getBookByName(name);
@@ -81,7 +81,7 @@ public class BookServiceImpl implements BookService {
                 if (resultSet.next()) {
                     int rating = resultSet.getInt(7);
                     rating++;
-                    bookRepository.updateBookRatingByName(rating, name);
+                    bookRepository.updateBookRatingByBookName(rating, name);
                     System.out.println("Thank you for your vote !\n");
                 }
             } catch (SQLException e) {
@@ -95,7 +95,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void mostRatedBooks() { // -> Show books in order from the biggest rating to the lowest
         try {
-            ResultSet resultSet = bookRepository.getBooksByRating();
+            ResultSet resultSet = bookRepository.getAllBooksInOrderByRating();
 
             while (resultSet.next()) {
                 StringBuilder builder = new StringBuilder();
@@ -120,7 +120,7 @@ public class BookServiceImpl implements BookService {
         }
     }
     @Override
-    public void vote(int userId) { // -> Check if user is already voted, add vote is not
+    public void addBookRating(int userId) { // -> Check if user is already voted, add vote is not
         List<String> listOfTitles = new ArrayList<>();
         System.out.println("Please enter title to vote for:");
         String title = scanner.nextLine().toLowerCase(); //Fetch all books from db, to ignore case sensitivity
@@ -131,11 +131,16 @@ public class BookServiceImpl implements BookService {
                 //resultSet return list of all books that user is already voted
                 listOfTitles.add(resultSet.getString(1).toLowerCase());
             }
-            if  (!listOfTitles.contains(title)){
-                    addRating(title);
-                    bookRepository.addRating(userId, title);
+            if  (bookValidator.isBookExist(title)){
+                if  (!listOfTitles.contains(title)){
+                    incrementBookRating(title);
+                    bookRepository.saveRatingToCorrespondingUser(userId, title);
+                }else{
+                    System.out.println("You already voted for this book!");
+                }
             }else{
-                System.out.println("You already voted for this book!");
+                System.out.println("Sorry, you can't vote for not existing books,\n" +
+                        "please add this book in library first!");
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with adding a vote to database!\nPlease try again !");

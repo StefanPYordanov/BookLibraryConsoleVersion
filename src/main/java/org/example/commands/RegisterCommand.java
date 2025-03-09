@@ -2,39 +2,19 @@ package org.example.commands;
 
 import org.example.service.UserServiceImpl;
 
+import static org.example.model.LoggedUserDto.*;
+
 public class RegisterCommand implements Command{
     UserServiceImpl userServiceImpl = new UserServiceImpl();
-
-    private String currentUser;
-    private String role;
-
-    public String getCurrentUser() {
-        return currentUser;
-    }
-
-    public RegisterCommand setCurrentUser(String currentUser) {
-        this.currentUser = currentUser;
-        return this;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public RegisterCommand setRole(String role) {
-        this.role = role;
-        return this;
-    }
-
     @Override
     public void execute() {
         String[] credentials = userServiceImpl.register().split(" ");
         userServiceImpl.login(credentials[0], credentials[1]); //use credential for login after register
-        currentUser = credentials[0];
-        if (userServiceImpl.isAdmin(currentUser)){
-            role = "admin";
+        loggedUserUsername = credentials[0];
+        if (userServiceImpl.isAdmin(loggedUserUsername)){
+            loggedUserRole = "Admin";
         }else{
-            role = "user";
+            loggedUserRole = "User";
         }
     }
 }

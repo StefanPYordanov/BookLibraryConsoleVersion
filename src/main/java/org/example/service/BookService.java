@@ -7,9 +7,9 @@ public interface BookService {
 
     public void deleteBook();
 
-    public void addRating(String name);
+    public void incrementBookRating(String name);
 
     public void mostRatedBooks();
 
-    public void vote(int userId);
+    public void addBookRating(int userId);
 }
