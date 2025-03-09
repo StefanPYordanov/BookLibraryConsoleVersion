@@ -15,7 +15,6 @@ public final class TextMessages { // TODO : Move different messages to other pac
     public static final String DELETE_BOOK_COMMAND = "9";
     public static final String DELETE_USER_COMMAND = "10";
     public static final String GIVE_ADMIN_ROLE_TO_USER_COMMAND = "11";
-    public static final String EMPTY_USER = "";
     public static final int MIN_VALUE_OF_POSITIVE_NUMBER = 1;
     public static int CURRENT_YEAR = LocalDate.now().getYear();
     public static final int MIN_LENGTH_REQUIREMENT_FOR_FIELD = 4;

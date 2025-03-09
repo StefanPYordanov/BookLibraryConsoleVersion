@@ -6,8 +6,8 @@ import java.util.Map;
 import static org.example.helper.messages.TextMessages.*;
 
 public class MenuManager {
-    private Map<String, Command> commands = new HashMap<>();
-    public void showAdminMenu(){
+    private Map<String, Command> commands = new HashMap<>(); //Map with valid commands
+    public void showAdminMenu(){ //Show admin menu and add commands for admin to map
         System.out.println("*************************************************");
         System.out.println("To Exit the app press 3");
         System.out.println("To see our library press 4");
@@ -20,11 +20,13 @@ public class MenuManager {
         System.out.println("To give admin role to other user press 11");
         System.out.println("*************************************************");
 
-        commands.clear();
+        commands.clear(); //TODO : think to remove map loading time with if else to see if user before is with same authorizations
         commands.put(EXIT_COMMAND, new ExitCommand());
         commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
         commands.put(ADD_BOOK_COMMAND, new AddBookCommand());
+        commands.put(RATE_BOOK_COMMAND, new RateBookCommand());
         commands.put(DISPLAY_BIGGEST_RATED_BOOKS_COMMAND, new ShowBiggestRatedBooksCommand());
+        commands.put(LOGOUT_COMMAND, new LogoutCommand());
         commands.put(DELETE_BOOK_COMMAND, new DeleteBookCommand());
         commands.put(DELETE_USER_COMMAND, new DeleteUserCommand());
         commands.put(GIVE_ADMIN_ROLE_TO_USER_COMMAND, new GiveRoleCommand());
@@ -43,7 +45,9 @@ public class MenuManager {
         commands.put(EXIT_COMMAND, new ExitCommand());
         commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
         commands.put(ADD_BOOK_COMMAND, new AddBookCommand());
+        commands.put(RATE_BOOK_COMMAND, new RateBookCommand());
         commands.put(DISPLAY_BIGGEST_RATED_BOOKS_COMMAND, new ShowBiggestRatedBooksCommand());
+        commands.put(LOGOUT_COMMAND, new LogoutCommand());
     }
     public void showGuestMenu(){
         System.out.println("*************************************************");
@@ -54,6 +58,8 @@ public class MenuManager {
         System.out.println("*************************************************");
 
         commands.clear();
+        commands.put(LOGIN_COMMAND, new LoginCommand());
+        commands.put(REGISTER_COMMAND, new RegisterCommand());
         commands.put(EXIT_COMMAND, new ExitCommand());
         commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
     }

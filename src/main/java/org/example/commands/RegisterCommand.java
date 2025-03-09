@@ -2,7 +2,7 @@ package org.example.commands;
 
 import org.example.service.UserServiceImpl;
 
-import static org.example.model.LoggedUserDto.*;
+import static org.example.model.dto.LoggedUserDto.*;
 
 public class RegisterCommand implements Command{
     UserServiceImpl userServiceImpl = new UserServiceImpl();
@@ -16,5 +16,5 @@ public class RegisterCommand implements Command{
         }else{
             loggedUserRole = "User";
         }
-    }
+    } //TODO : Move to other method !
 }

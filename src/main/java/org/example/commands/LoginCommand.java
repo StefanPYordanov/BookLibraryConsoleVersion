@@ -3,7 +3,7 @@ package org.example.commands;
 import org.example.service.UserServiceImpl;
 
 import java.util.Scanner;
-import static org.example.model.LoggedUserDto.*;
+import static org.example.model.dto.LoggedUserDto.*;
 
 public class LoginCommand implements Command{
     Scanner scanner = new Scanner(System.in);
