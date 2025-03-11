@@ -124,20 +124,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isAdmin(String username) { // -> check if user is admin //TODO : consider return String loggedUserRole DTO
+    public String findRole(String username) {
         try {
             ResultSet resultSet = userRepository.getUserByUsername(username);
             if (resultSet.next()) {
-                return resultSet.getString(6).equals("Admin");
+                if (resultSet.getString(6).equals("Admin")){
+                   return "Admin";
+                }else{
+                   return "User";
+                }
             }
         } catch (SQLException e) {
             System.out.println("There isn't admin with this username!");
-            return false;
         }
-        return false;
+        return EMPTY_USER;
     }
     @Override
-    public int findUser(String currentUser) { // -> find user id for vote method
+    public int findUserId(String currentUser) { // -> find user id for vote method
         try {
             ResultSet resultSet = userRepository.getUserIdByUsername(currentUser);
             if (resultSet.next()) {

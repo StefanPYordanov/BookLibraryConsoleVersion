@@ -22,6 +22,10 @@ public final class TextMessages { // TODO : Move different messages to other pac
     public static final int RATING_BEFORE_SOMEONE_RATE_FOR_BOOK = 0;
     public static final String INITIAL_USER_ROLE_AFTER_REGISTER = "User";
     public static final int INCREMENT_LAST_USER_ID_BY_ONE = 1;
+    public static final String EMPTY_USER = "";
+    public static final int ADMIN_MENU = 9;
+    public static final int USER_MENU = 6;
+    public static final int GUEST_MENU = 4;
 
 
 

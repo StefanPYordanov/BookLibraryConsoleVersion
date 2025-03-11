@@ -20,16 +20,18 @@ public class MenuManager {
         System.out.println("To give admin role to other user press 11");
         System.out.println("*************************************************");
 
-        commands.clear(); //TODO : think to remove map loading time with if else to see if user before is with same authorizations
-        commands.put(EXIT_COMMAND, new ExitCommand());
-        commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
-        commands.put(ADD_BOOK_COMMAND, new AddBookCommand());
-        commands.put(RATE_BOOK_COMMAND, new RateBookCommand());
-        commands.put(DISPLAY_BIGGEST_RATED_BOOKS_COMMAND, new ShowBiggestRatedBooksCommand());
-        commands.put(LOGOUT_COMMAND, new LogoutCommand());
-        commands.put(DELETE_BOOK_COMMAND, new DeleteBookCommand());
-        commands.put(DELETE_USER_COMMAND, new DeleteUserCommand());
-        commands.put(GIVE_ADMIN_ROLE_TO_USER_COMMAND, new GiveRoleCommand());
+        if (commands.size() != ADMIN_MENU) { // check if commands map have the same commands, if not clear it and add new commands
+            commands.clear();                // prevent map to load every time if contain same values
+            commands.put(EXIT_COMMAND, new ExitCommand());
+            commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
+            commands.put(ADD_BOOK_COMMAND, new AddBookCommand());
+            commands.put(RATE_BOOK_COMMAND, new RateBookCommand());
+            commands.put(DISPLAY_BIGGEST_RATED_BOOKS_COMMAND, new ShowBiggestRatedBooksCommand());
+            commands.put(LOGOUT_COMMAND, new LogoutCommand());
+            commands.put(DELETE_BOOK_COMMAND, new DeleteBookCommand());
+            commands.put(DELETE_USER_COMMAND, new DeleteUserCommand());
+            commands.put(GIVE_ADMIN_ROLE_TO_USER_COMMAND, new GiveRoleCommand());
+        }
     }
     public void showUserMenu(){
         System.out.println("*************************************************");
@@ -41,13 +43,15 @@ public class MenuManager {
         System.out.println("For Logout press 8");
         System.out.println("*************************************************");
 
-        commands.clear();
-        commands.put(EXIT_COMMAND, new ExitCommand());
-        commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
-        commands.put(ADD_BOOK_COMMAND, new AddBookCommand());
-        commands.put(RATE_BOOK_COMMAND, new RateBookCommand());
-        commands.put(DISPLAY_BIGGEST_RATED_BOOKS_COMMAND, new ShowBiggestRatedBooksCommand());
-        commands.put(LOGOUT_COMMAND, new LogoutCommand());
+        if (commands.size() != USER_MENU) {
+            commands.clear();
+            commands.put(EXIT_COMMAND, new ExitCommand());
+            commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
+            commands.put(ADD_BOOK_COMMAND, new AddBookCommand());
+            commands.put(RATE_BOOK_COMMAND, new RateBookCommand());
+            commands.put(DISPLAY_BIGGEST_RATED_BOOKS_COMMAND, new ShowBiggestRatedBooksCommand());
+            commands.put(LOGOUT_COMMAND, new LogoutCommand());
+        }
     }
     public void showGuestMenu(){
         System.out.println("*************************************************");
@@ -57,11 +61,13 @@ public class MenuManager {
         System.out.println("To see our library press 4");
         System.out.println("*************************************************");
 
-        commands.clear();
-        commands.put(LOGIN_COMMAND, new LoginCommand());
-        commands.put(REGISTER_COMMAND, new RegisterCommand());
-        commands.put(EXIT_COMMAND, new ExitCommand());
-        commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
+        if (commands.size() != GUEST_MENU) {
+            commands.clear();
+            commands.put(LOGIN_COMMAND, new LoginCommand());
+            commands.put(REGISTER_COMMAND, new RegisterCommand());
+            commands.put(EXIT_COMMAND, new ExitCommand());
+            commands.put(DISPLAY_ALL_BOOKS_COMMAND, new ShowLibraryCommand());
+        }
     }
 
     public void executeCommand(String choice){

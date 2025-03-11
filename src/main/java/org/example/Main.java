@@ -25,6 +25,5 @@ public class Main {
                 menuManager.executeCommand(choice);
             }
         }
-    } //TODO : Optimize services !!!
-      //TODO : Optimize layers to correspond with each other in more describable way ! Controller -> Service -> Repository
+    }
 }

@@ -11,7 +11,6 @@ public class RateBookCommand implements Command {
 
     @Override
     public void execute() {
-        int userId = userServiceImpl.findUser(loggedUserUsername);
-        bookServiceImpl.addBookRating(userId);
-    } //TODO : describe this operations to be more clear what you want to achieve
+        bookServiceImpl.addBookRating(userServiceImpl.findUserId(loggedUserUsername));
+    }
 }

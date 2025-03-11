@@ -13,7 +13,7 @@ public interface UserService {
 
     public int nextUserId();
 
-    public boolean isAdmin(String username);
+    public String findRole(String username);
 
-    public int findUser(String currentUser);
+    public int findUserId(String currentUser);
 }

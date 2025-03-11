@@ -63,4 +63,12 @@ public class UserController {
         System.out.println("Please enter the id of the user you want to become admin:");
         return GenericValidator.readNumber();
     }
+    public String loginUsername(){
+        System.out.println("Please Enter your username:");
+        return scanner.nextLine();
+    }
+    public String loginPassword(){
+        System.out.println("Please Enter your password");
+        return scanner.nextLine();
+    }
 }

@@ -11,10 +11,6 @@ public class RegisterCommand implements Command{
         String[] credentials = userServiceImpl.register().split(" ");
         userServiceImpl.login(credentials[0], credentials[1]); //use credential for login after register
         loggedUserUsername = credentials[0];
-        if (userServiceImpl.isAdmin(loggedUserUsername)){
-            loggedUserRole = "Admin";
-        }else{
-            loggedUserRole = "User";
-        }
-    } //TODO : Move to other method !
+        loggedUserRole = userServiceImpl.findRole(credentials[0]);
+    }
 }
