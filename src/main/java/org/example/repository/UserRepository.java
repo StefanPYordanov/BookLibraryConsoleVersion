@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import org.example.config.ConnectionFactory;
+import org.example.logger.LoggerUtil;
 import org.example.model.entity.UserEntity;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -15,6 +16,7 @@ public class UserRepository {
             return statement.executeQuery();
         } catch (SQLException e){
             System.out.println("A problem has occurred with finding user by username!");
+            LoggerUtil.logWaring("Finding a user by username in database failed due to SQL Exception");
             return null;
 
         }
@@ -32,6 +34,7 @@ public class UserRepository {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("A problem has occurred with registration!\nPlease try again !");
+            LoggerUtil.logWaring("Adding a user failed due to SQL Exception");
         }
     }
     public void deleteUserById (int id) { //-> Delete user from DB
@@ -41,6 +44,7 @@ public class UserRepository {
             statement.executeUpdate();
         } catch(SQLException e){
             System.out.println("There is problem with deleting user!\nPlease try again !");
+            LoggerUtil.logWaring("Deleting a user by username in database failed due to SQL Exception");
         }
     }
     public ResultSet getAllUsers() { //-> Show all users from DB
@@ -51,6 +55,7 @@ public class UserRepository {
         } catch(SQLException e){
             System.out.println("A problem has occurred with displaying all users!\n" +
                     "Please try again !");
+            LoggerUtil.logWaring("Finding all users in database failed");
             return null;
         }
     }
@@ -61,6 +66,7 @@ public class UserRepository {
             statement.executeQuery();
         } catch(SQLException e){
             System.out.println("A problem has occurred with getting user by id");
+            LoggerUtil.logWaring("Finding user by id in database failed");
         }
     }
     public void updateUserRole (int id) { //-> Change user role in DB
@@ -71,6 +77,7 @@ public class UserRepository {
         } catch(SQLException e){
             System.out.println("A problem has occurred with promoting a user!\n" +
                     "Please try again !");
+            LoggerUtil.logWaring("Promoting user role in database failed");
         }
     }
     public ResultSet getBiggestUserId () { //-> Show biggest id from user in DB
@@ -80,6 +87,7 @@ public class UserRepository {
             return statement.executeQuery();
         } catch(SQLException e){
             System.out.println("A problem has occurred with getting biggest user id in database");
+            LoggerUtil.logWaring("Finding next unused id in database failed");
             return null;
         }
     }
@@ -90,6 +98,7 @@ public class UserRepository {
             return statement.executeQuery();
         } catch(SQLException e){
             System.out.println("A problem has occurred with getting id for user!");
+            LoggerUtil.logWaring("Finding user id by username in database failed");
             return null;
         }
     }
@@ -101,6 +110,7 @@ public class UserRepository {
             return statement.executeQuery(query);
         } catch(SQLException e){
             System.out.println("A problem has occurred with getting user from database");
+            LoggerUtil.logWaring("Finding user in database failed");
             return null;
         }
     }
@@ -111,6 +121,7 @@ public class UserRepository {
             return statement.executeQuery(query);
         } catch(SQLException e){
             System.out.println("A problem has occurred with getting email from database");
+            LoggerUtil.logWaring("Finding user email in database failed");
             return null;
         }
     }
@@ -121,6 +132,7 @@ public class UserRepository {
             return statement.executeQuery(query);
         } catch(SQLException e){
             System.out.println("A problem has occurred with getting id for user!");
+            LoggerUtil.logWaring("Finding user id in database failed");
             return null;
         }
     }
@@ -131,6 +143,7 @@ public class UserRepository {
             statement.executeUpdate();
         } catch(SQLException e){
             System.out.println("There is problem with deleting user ratings in database");
+            LoggerUtil.logWaring("Deleting user from database failed");
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import org.example.config.ConnectionFactory;
+import org.example.logger.LoggerUtil;
 import org.example.model.entity.BookEntity;
 
 import java.sql.Connection;
@@ -26,6 +27,7 @@ public class BookRepository {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("A problem has occurred with adding book!\nPlease try again !");
+            LoggerUtil.logWaring("Adding a book failed due to SQL Exception");
         }
     }
     public ResultSet getAllBooks () { //-> Show all books from DB
@@ -35,6 +37,7 @@ public class BookRepository {
             return statement.executeQuery();
         } catch (SQLException e){
             System.out.println("A problem has occurred with showing all books!\nPlease try again !");
+            LoggerUtil.logWaring("Displaying a book failed due to SQL Exception");
             return null;
         }
     }
@@ -45,6 +48,7 @@ public class BookRepository {
             statement.executeUpdate();
         } catch(SQLException e){
             System.out.println("There is problem with deleting book!\nPlease try again !");
+            LoggerUtil.logWaring("Deleting a book by title failed due to SQL Exception");
         }
     }
     public ResultSet getBookByName (String name) { //-> Show book from DB
@@ -54,6 +58,7 @@ public class BookRepository {
             return statement.executeQuery();
         }catch(SQLException e){
             System.out.println("A problem has occurred with getting book from database!");
+            LoggerUtil.logWaring("Finding a book by name in database failed due to SQL Exception");
             return null;
         }
     }
@@ -64,6 +69,7 @@ public class BookRepository {
             statement.executeUpdate(query);
         }catch (SQLException e){
             System.out.println("A problem has occurred with update rating in database!");
+            LoggerUtil.logWaring("Rating for a book failed due to SQL Exception");
         }
     }
     public ResultSet getAllBooksInOrderByRating()  { //-> Show most rated books
@@ -74,6 +80,7 @@ public class BookRepository {
         }catch (SQLException e){
             System.out.println("A problem has occurred with getting books with biggest rating!\n" +
                     "Please try again !");
+            LoggerUtil.logWaring("Displaying books in order failed due to SQL Exception");
             return null;
         }
     }
@@ -84,6 +91,7 @@ public class BookRepository {
             return statement.executeQuery();
         }catch (SQLException e){
             System.out.println("A problem has occurred with getting book by username in database!");
+            LoggerUtil.logWaring("Finding a book by user id in database failed due to SQL Exception");
             return null;
         }
     }
@@ -98,6 +106,7 @@ public class BookRepository {
         } catch (SQLException e) {
             System.out.println("A problem has occurred with adding rating to book!\n" +
                     "Please try again !");
+            LoggerUtil.logWaring("Adding rating to book failed due to SQL Exception");
         }
     }
 }

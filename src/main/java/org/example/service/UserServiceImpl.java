@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.controller.UserController;
 import org.example.helper.validations.GenericValidator;
 import org.example.helper.validations.UserValidator;
+import org.example.logger.LoggerUtil;
 import org.example.model.entity.UserEntity;
 import org.example.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -24,12 +25,14 @@ public class UserServiceImpl implements UserService {
 
             if (!resultSet.next()) {
                 System.out.println("Invalid username or password!");
+                LoggerUtil.logInfo("Unsuccessful login");
                 return false;
             } else {
                 String fullName = resultSet.getString(5);
                 String pass = resultSet.getString(3);
                 if (BCrypt.checkpw(password, pass)) {
                     System.out.println("Welcome " + fullName);
+                    LoggerUtil.logInfo(username + " has logged in successfully");
                     return true;
                 } else {
                     throw new IllegalArgumentException();
@@ -37,10 +40,12 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with login!\nPlease try again !");
+            LoggerUtil.logWaring("Login problem due to SQL Exception");
             return false;
 
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid username or password!");
+            LoggerUtil.logWaring("Login problem due to Illegal Argument Exception");
             return false;
         }
     }
@@ -58,6 +63,8 @@ public class UserServiceImpl implements UserService {
 
             userRepository.saveUser(userToSave);
 
+            LoggerUtil.logInfo(userToSave.getUsername() + " has register successfully");
+
             return userToSave.getUsername() + " " + userToSave.getPassword(); // return credential for login after registration
     }
 
@@ -71,6 +78,7 @@ public class UserServiceImpl implements UserService {
               userRepository.deleteUserById(id);
 
             System.out.println("User has been blocked!\n");
+            LoggerUtil.logInfo("User has been blocked from application");
     }
 
     @Override
@@ -94,6 +102,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with displaying users!\nPlease try again !");
+            LoggerUtil.logWaring("Displaying all users problem due to SQL Exception");
         }
     }
 
@@ -107,6 +116,7 @@ public class UserServiceImpl implements UserService {
             userRepository.updateUserRole(id);
 
             System.out.println("Successfully promoted user!\n");
+            LoggerUtil.logInfo("User has been promoted to admin role");
     }
 
     @Override
@@ -116,8 +126,9 @@ public class UserServiceImpl implements UserService {
             if (resultSet.next()) {
                 return resultSet.getInt(1) + INCREMENT_LAST_USER_ID_BY_ONE;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("A problem has occurred with finding next user id in database!");
+            LoggerUtil.logWaring("Finding next id failed due to SQL Excretion");
             return 0;
         }
         return 0;
@@ -136,6 +147,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             System.out.println("There isn't admin with this username!");
+            LoggerUtil.logWaring("Finding user role failed due to SQL Exception");
         }
         return EMPTY_USER;
     }
@@ -146,8 +158,9 @@ public class UserServiceImpl implements UserService {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("There isn't user with this username!");
+            LoggerUtil.logWaring("Finding user id failed due to SQL Exception");
             return 0;
         }
         return 0;

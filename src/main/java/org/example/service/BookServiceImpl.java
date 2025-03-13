@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.controller.BookController;
 import org.example.helper.validations.BookValidator;
+import org.example.logger.LoggerUtil;
 import org.example.model.entity.BookEntity;
 import org.example.repository.BookRepository;
 
@@ -34,6 +35,7 @@ public class BookServiceImpl implements BookService {
             bookRepository.saveBook(bookToSave);
 
             System.out.println(bookToSave.getBookName() + " has been added to library!\n");
+            LoggerUtil.logInfo(bookToSave.getBookName() + " has been added to successfully");
     }
 
     @Override
@@ -61,6 +63,7 @@ public class BookServiceImpl implements BookService {
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with displaying all books!\nPlease try again !");
+            LoggerUtil.logWaring("Displaying all users problem due to SQL Exception");
         }
     }
 
@@ -71,6 +74,7 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteBookByName(bookToDelete);
 
         System.out.println(bookToDelete + " has been removed from library!\n");
+        LoggerUtil.logInfo(bookToDelete + " has been deleted successfully");
     }
     @Override
     public void incrementBookRating (String name) { // -> Add rating to book in DB
@@ -83,12 +87,15 @@ public class BookServiceImpl implements BookService {
                     rating++;
                     bookRepository.updateBookRatingByBookName(rating, name);
                     System.out.println("Thank you for your vote !\n");
+                    LoggerUtil.logInfo(name + " has increase rating successfully");
                 }
             } catch (SQLException e) {
                 System.out.println("A problem has occurred with adding rating to book!\nPlease try again !");
+                LoggerUtil.logWaring("Rate book has failed due to SQL Exception");
             }
         } else {
             System.out.println("Book don't exist!");
+            LoggerUtil.logInfo(name + " don't exist in library");
         }
     }
 
@@ -117,6 +124,7 @@ public class BookServiceImpl implements BookService {
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with displaying most rated books!\nPlease try again !");
+            LoggerUtil.logWaring("Displaying all books problem due to SQL Exception");
         }
     }
     @Override
@@ -135,15 +143,19 @@ public class BookServiceImpl implements BookService {
                 if  (!listOfTitles.contains(title)){
                     incrementBookRating(title);
                     bookRepository.saveRatingToCorrespondingUser(userId, title);
+                    LoggerUtil.logInfo("User rated for " + title);
                 }else{
                     System.out.println("You already voted for this book!");
+                    LoggerUtil.logInfo("User already voted for" + title);
                 }
             }else{
                 System.out.println("Sorry, you can't vote for not existing books,\n" +
                         "please add this book in library first!");
+                LoggerUtil.logInfo("User is trying to vote for nonexistent book");
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with adding a vote to database!\nPlease try again !");
+            LoggerUtil.logWaring("Voting for book failed due to SQL Exception");
         }
     }
 }

@@ -1,5 +1,7 @@
 package org.example.config;
 
+import org.example.logger.LoggerUtil;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -25,8 +27,10 @@ public class ConnectionFactory {
                     user, password);
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Connection to DB Fail !");
+            LoggerUtil.logSevere("Connection to DataBase failed");
         }catch(IOException e){
             System.out.println("Property file missing !");
+            LoggerUtil.logSevere("Property file for database is missing");
         }
         return connection;
     }
