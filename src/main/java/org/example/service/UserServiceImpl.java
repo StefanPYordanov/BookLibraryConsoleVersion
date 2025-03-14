@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
             if (!resultSet.next()) {
                 System.out.println("Invalid username or password!");
-                LoggerUtil.logInfo("Unsuccessful login");
+                LoggerUtil.logInfo("Failed login attempt for user " + username + " : Invalid username or password");
                 return false;
             } else {
                 String fullName = resultSet.getString(5);
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with login!\nPlease try again !");
-            LoggerUtil.logWaring("Login problem due to SQL Exception");
+            LoggerUtil.logWaring("Database error occurred while attempting to login");
             return false;
 
         } catch (IllegalArgumentException e) {
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
               userRepository.deleteUserById(id);
 
             System.out.println("User has been blocked!\n");
-            LoggerUtil.logInfo("User has been blocked from application");
+            LoggerUtil.logInfo("User has been successfully blocked");
     }
 
     @Override
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with displaying users!\nPlease try again !");
-            LoggerUtil.logWaring("Displaying all users problem due to SQL Exception");
+            LoggerUtil.logWaring("Database error occurred while attempting to display all users");
         }
     }
 
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
             userRepository.updateUserRole(id);
 
             System.out.println("Successfully promoted user!\n");
-            LoggerUtil.logInfo("User has been promoted to admin role");
+            LoggerUtil.logInfo("User has been successfully promoted");
     }
 
     @Override
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             System.out.println("A problem has occurred with finding next user id in database!");
-            LoggerUtil.logWaring("Finding next id failed due to SQL Excretion");
+            LoggerUtil.logWaring("Database error occurred while attempting to find next user id");
             return 0;
         }
         return 0;
@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             System.out.println("There isn't admin with this username!");
-            LoggerUtil.logWaring("Finding user role failed due to SQL Exception");
+            LoggerUtil.logWaring("Database error occurred while attempting to find user role");
         }
         return EMPTY_USER;
     }
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             System.out.println("There isn't user with this username!");
-            LoggerUtil.logWaring("Finding user id failed due to SQL Exception");
+            LoggerUtil.logWaring("Database error occurred while attempting to find user id from ratings table");
             return 0;
         }
         return 0;
