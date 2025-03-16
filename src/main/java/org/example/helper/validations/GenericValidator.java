@@ -20,7 +20,7 @@ public class GenericValidator {
                 int number = Integer.parseInt(scanner.nextLine());
                 return number;
             } catch (NumberFormatException e){
-                System.out.println("Invalid command, please select from existing one");
+                System.out.println("Invalid command, please type in number!");
             }
         }
 

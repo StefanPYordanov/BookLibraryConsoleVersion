@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
             return false;
 
         } catch (InvalidUsernameOrPassword e) {
-            LoggerUtil.logWaring("Login problem due to Invalid Username or Password");
+            LoggerUtil.logWaring("Login problem due to Invalid Username or Password exception");
             return false;
         }
     }

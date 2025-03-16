@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.logging.*;
 
 public class LoggerUtil {
-    static final String LOGGER_FILE_PATH = "D:\\SoftUni\\SAP Project\\BookLibraryConsoleVersion\\src\\main\\" +
-            "java\\org\\example\\logger\\application.log";
+    static final String LOGGER_FILE_PATH = "D:\\SoftUni\\SAP Project\\BookLibraryConsoleVersion\\application.log";
     private static Logger logger;
     static {
         logger = Logger.getLogger(LoggerUtil.class.getName());
