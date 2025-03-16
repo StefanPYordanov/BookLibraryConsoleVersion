@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.controller.UserController;
+import org.example.exceptions.InvalidUsernameOrPassword;
 import org.example.helper.validations.GenericValidator;
 import org.example.helper.validations.UserValidator;
 import org.example.logger.LoggerUtil;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
                     LoggerUtil.logInfo(username + " has logged in successfully");
                     return true;
                 } else {
-                    throw new IllegalArgumentException();
+                    throw new InvalidUsernameOrPassword();
                 }
             }
         } catch (SQLException e) {
@@ -43,9 +44,8 @@ public class UserServiceImpl implements UserService {
             LoggerUtil.logWaring("Database error occurred while attempting to login");
             return false;
 
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid username or password!");
-            LoggerUtil.logWaring("Login problem due to Illegal Argument Exception");
+        } catch (InvalidUsernameOrPassword e) {
+            LoggerUtil.logWaring("Login problem due to Invalid Username or Password");
             return false;
         }
     }

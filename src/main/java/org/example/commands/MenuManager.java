@@ -4,21 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.example.helper.messages.TextMessages.*;
+import static org.example.helper.messages.PrintMenu.*;
 
 public class MenuManager {
     private Map<String, Command> commands = new HashMap<>(); //Map with valid commands
     public void showAdminMenu(){ //Show admin menu and add commands for admin to map
-        System.out.println("*************************************************");
-        System.out.println("To Exit the app press 3");
-        System.out.println("To see our library press 4");
-        System.out.println("If you want to add a book press 5");
-        System.out.println("To rate a book press 6");
-        System.out.println("To see books with biggest rating press 7");
-        System.out.println("For Logout press 8");
-        System.out.println("To delete a book press 9");
-        System.out.println("To block user press 10");
-        System.out.println("To give admin role to other user press 11");
-        System.out.println("*************************************************");
+        PrintAdminMenu();
 
         if (commands.size() != ADMIN_MENU) { // check if commands map have the same commands, if not clear it and add new commands
             commands.clear();                // prevent map to load every time if contain same values
@@ -34,14 +25,7 @@ public class MenuManager {
         }
     }
     public void showUserMenu(){
-        System.out.println("*************************************************");
-        System.out.println("To Exit the app press 3");
-        System.out.println("To see our library press 4");
-        System.out.println("If you want to add a book press 5");
-        System.out.println("To rate a book press 6");
-        System.out.println("To see books with biggest rating press 7");
-        System.out.println("For Logout press 8");
-        System.out.println("*************************************************");
+        PrintUserMenu();
 
         if (commands.size() != USER_MENU) {
             commands.clear();
@@ -54,12 +38,7 @@ public class MenuManager {
         }
     }
     public void showGuestMenu(){
-        System.out.println("*************************************************");
-        System.out.println("For Login press 1");
-        System.out.println("For Register press 2");
-        System.out.println("To Exit the app press 3");
-        System.out.println("To see our library press 4");
-        System.out.println("*************************************************");
+        PrintGuestMenu();
 
         if (commands.size() != GUEST_MENU) {
             commands.clear();
