@@ -1,13 +1,12 @@
 package org.example.service;
 
 import org.example.controller.UserController;
-import org.example.exceptions.InvalidUsernameOrPassword;
+import org.example.exceptions.InvalidUsernameOrPasswordException;
 import org.example.helper.validations.GenericValidator;
 import org.example.helper.validations.UserValidator;
 import org.example.logger.LoggerUtil;
 import org.example.model.entity.UserEntity;
 import org.example.repository.UserRepository;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,13 +29,13 @@ public class UserServiceImpl implements UserService {
                 return false;
             } else {
                 String fullName = resultSet.getString(5);
-                String pass = resultSet.getString(3);
-                if (BCrypt.checkpw(password, pass)) {
+                String storedPassword = resultSet.getString(3);
+                if (userValidator.isPasswordCorrect(password, storedPassword)) {
                     System.out.println("Welcome " + fullName);
                     LoggerUtil.logInfo(username + " has logged in successfully");
                     return true;
                 } else {
-                    throw new InvalidUsernameOrPassword();
+                    throw new InvalidUsernameOrPasswordException();
                 }
             }
         } catch (SQLException e) {
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService {
             LoggerUtil.logWaring("Database error occurred while attempting to login");
             return false;
 
-        } catch (InvalidUsernameOrPassword e) {
+        } catch (InvalidUsernameOrPasswordException e) {
             LoggerUtil.logWaring("Login problem due to Invalid Username or Password exception");
             return false;
         }

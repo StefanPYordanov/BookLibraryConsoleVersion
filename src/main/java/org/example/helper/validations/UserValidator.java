@@ -1,6 +1,7 @@
 package org.example.helper.validations;
 
 import org.example.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -74,5 +75,8 @@ public class UserValidator {
             System.out.println("A problem has occurred with finding user id in database !");
             return true;
         }
+    }
+    public boolean isPasswordCorrect(String providedPassword, String storedPassword){
+        return BCrypt.checkpw(providedPassword, storedPassword);
     }
 }
