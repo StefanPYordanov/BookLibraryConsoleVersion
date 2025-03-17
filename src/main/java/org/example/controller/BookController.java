@@ -14,7 +14,9 @@ public class BookController {
         // Set book isbn in AddBook form
         System.out.println("Please enter isbn:");
         int isbn = GenericValidator.readNumber();
-        while (!bookValidator.isNumberPositive(isbn)) {
+        while (!bookValidator.isNumberPositive(isbn) || bookValidator.isIsbnExist(isbn)) {
+            System.out.println("Book with same isbn already exist, check isbn of the book " +
+                    "you try to add and try again");
             isbn = GenericValidator.readNumber();
         }
         return isbn;

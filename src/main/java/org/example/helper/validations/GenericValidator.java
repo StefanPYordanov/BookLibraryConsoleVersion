@@ -2,7 +2,7 @@ package org.example.helper.validations;
 
 import java.util.Scanner;
 
-import static org.example.helper.messages.TextMessages.MIN_LENGTH_REQUIREMENT_FOR_FIELD;
+import static org.example.helper.messages.BookMessages.MIN_LENGTH_REQUIREMENT_FOR_FIELD;
 
 public class GenericValidator {
     public static boolean isFieldEmpty(String fieldInput) { //-> Check if someone try to input empty text or only few letters

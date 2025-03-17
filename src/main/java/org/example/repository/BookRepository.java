@@ -106,7 +106,18 @@ public class BookRepository {
         } catch (SQLException e) {
             System.out.println("A problem has occurred with adding rating to book!\n" +
                     "Please try again !");
-            LoggerUtil.logWaring("Database error occurred while attempting to add book to user ");
+            LoggerUtil.logWaring("Database error occurred while attempting to add book to user");
         }
+    }
+    public ResultSet getBookByIsbn(int isbn){
+        try{
+            String query = "SELECT isbn FROM books WHERE isbn = '" + isbn + "'";
+            PreparedStatement statement = connection.prepareStatement(query);
+            return statement.executeQuery();
+        }catch (SQLException e){
+            System.out.println("A problem has occurred with finding book isbn in database");
+            LoggerUtil.logWaring("Database error occurred while attempting to get book isbn");
+        }
+        return null;
     }
 }

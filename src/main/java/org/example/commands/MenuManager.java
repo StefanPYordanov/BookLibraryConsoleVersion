@@ -3,7 +3,8 @@ package org.example.commands;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.example.helper.messages.TextMessages.*;
+import static org.example.helper.messages.CommandsMessages.*;
+import static org.example.helper.messages.UserMessages.*;
 import static org.example.helper.messages.PrintMenu.*;
 
 public class MenuManager {

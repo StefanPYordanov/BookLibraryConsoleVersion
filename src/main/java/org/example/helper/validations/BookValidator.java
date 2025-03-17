@@ -5,7 +5,7 @@ import org.example.repository.BookRepository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.example.helper.messages.TextMessages.*;
+import static org.example.helper.messages.BookMessages.*;
 
 public class BookValidator {
 
@@ -37,5 +37,14 @@ public class BookValidator {
         }else{
             return true;
         }
+    }
+    public boolean isIsbnExist(int isbn){
+        try {
+            ResultSet resultSet = bookRepository.getBookByIsbn(isbn);
+            return resultSet.next();
+        } catch (SQLException e){
+            System.out.println("A problem has occurred with finding book isbn");
+        }
+        return false;
     }
 }

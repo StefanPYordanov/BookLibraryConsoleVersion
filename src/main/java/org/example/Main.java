@@ -4,7 +4,7 @@ import org.example.commands.*;
 
 import java.util.Scanner;
 
-import static org.example.helper.messages.TextMessages.*;
+import static org.example.helper.messages.CommandsMessages.*;
 import static org.example.model.dto.LoggedUserDto.*;
 
 public class Main {

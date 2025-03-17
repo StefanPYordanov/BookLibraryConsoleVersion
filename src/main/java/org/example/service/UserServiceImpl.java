@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.controller.UserController;
 import org.example.exceptions.InvalidUsernameOrPasswordException;
+import org.example.exceptions.UserNotFoundException;
 import org.example.helper.validations.GenericValidator;
 import org.example.helper.validations.UserValidator;
 import org.example.logger.LoggerUtil;
@@ -11,7 +12,7 @@ import org.example.repository.UserRepository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.example.helper.messages.TextMessages.*;
+import static org.example.helper.messages.UserMessages.*;
 
 public class UserServiceImpl implements UserService {
     UserValidator userValidator = new UserValidator();
@@ -130,7 +131,8 @@ public class UserServiceImpl implements UserService {
             LoggerUtil.logWaring("Database error occurred while attempting to find next user id");
             return 0;
         }
-        return 0;
+        LoggerUtil.logWaring("Find next user id failed");
+        throw new UserNotFoundException();
     }
 
     @Override
@@ -162,6 +164,7 @@ public class UserServiceImpl implements UserService {
             LoggerUtil.logWaring("Database error occurred while attempting to find user id from ratings table");
             return 0;
         }
-        return 0;
+        LoggerUtil.logWaring(currentUser + " with this name does not found");
+        throw new UserNotFoundException();
     }
 }

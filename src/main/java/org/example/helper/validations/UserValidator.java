@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.example.helper.messages.TextMessages.*;
+import static org.example.helper.messages.UserMessages.*;
 
 public class UserValidator {
     UserRepository userRepository = new UserRepository();

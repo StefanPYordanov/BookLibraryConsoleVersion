@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.controller.BookController;
+import org.example.exceptions.BookNotFoundException;
 import org.example.helper.validations.BookValidator;
 import org.example.logger.LoggerUtil;
 import org.example.model.entity.BookEntity;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.example.helper.messages.TextMessages.*;
+import static org.example.helper.messages.BookMessages.*;
 
 public class BookServiceImpl implements BookService {
     Scanner scanner = new Scanner(System.in);
@@ -94,8 +95,8 @@ public class BookServiceImpl implements BookService {
                 LoggerUtil.logWaring("Database error occurred while attempting to vote for book");
             }
         } else {
-            System.out.println("Book don't exist!");
             LoggerUtil.logInfo("Failed vote attempt for book " + name + " : Book don't exist in library");
+            throw new BookNotFoundException();
         }
     }
 
