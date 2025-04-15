@@ -16,7 +16,9 @@ public class ConnectionFactory {
         try {
             // Load Property file
             Properties props = new Properties();
-            props.load(new FileInputStream(".\\src\\main\\resources\\db.properties"));
+//            props.load(new FileInputStream(".\\src\\main\\resources\\db.properties"));
+//            url=jdbc:mysql://localhost:3306/library
+            props.load(new FileInputStream("resources/db.properties"));
             // Read Property file
             String user = props.getProperty("user");
             String password = props.getProperty("password");
