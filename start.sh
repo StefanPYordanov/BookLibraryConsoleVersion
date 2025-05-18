@@ -1,4 +1,3 @@
-#!/bin/sh
 echo "mysql-service"
 echo "3306"
 echo "library"

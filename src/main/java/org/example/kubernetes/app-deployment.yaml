@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: library-app
 spec:
-  replicas: 1
+  #replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: library-app
@@ -14,7 +15,8 @@ spec:
     spec:
       containers:
         - name: library-app
-          image: stefanpyordanov/book-library-app:latest
+          #image: stefanpyordanov/book-library-app:latest
+          image: stefanpyordanov/book-library-app:v2
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

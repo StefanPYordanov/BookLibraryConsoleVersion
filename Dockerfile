@@ -1,9 +1,7 @@
 FROM openjdk:17
+
 WORKDIR /app
 
-COPY target/BookLibraryConsoleVersion-1.0-SNAPSHOT-jar-with-dependencies.jar /app/book-library-app.jar
-COPY start.sh /start.sh
+COPY target/BookLibraryConsoleVersion-2.0-SNAPSHOT-jar-with-dependencies.jar /app/book-library-app.jar
 
-RUN chmod +x /start.sh
-
-ENTRYPOINT ["/start.sh"]
+ENTRYPOINT ["java", "-jar", "/app/book-library-app.jar"]
